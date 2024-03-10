@@ -350,6 +350,7 @@ export class TourCardViewComponent implements OnChanges {
         this.tourAuthoringService.deleteTour(tourId).subscribe({
             next: () => {
                 this.notifier.notify("success", "Tour deleted.");
+                this.notifyParent.emit();
             },
             error: err => {
                 this.notifier.notify(
