@@ -345,4 +345,18 @@ export class TourCardViewComponent implements OnChanges {
             },
         });
     }
+
+    delete(tourId : number){
+        this.tourAuthoringService.deleteTour(tourId).subscribe({
+            next: () => {
+                this.notifier.notify("success", "Tour deleted.");
+            },
+            error: err => {
+                this.notifier.notify(
+                    "error",
+                    "Failed to delete tour. " + xpError.getErrorMessage(err),
+                );
+            },
+        });
+    }
 }
