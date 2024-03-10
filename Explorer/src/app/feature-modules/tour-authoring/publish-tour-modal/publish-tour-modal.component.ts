@@ -49,6 +49,10 @@ export class PublishTourModalComponent {
         const tour = this.data.tour;
         tour.distance = Math.round(this.data.distance * 100) / 100;
 
+        if(!this.data.tour.durations){
+            this.data.tour.durations = [];
+        }
+        
         if (this.publishForm.value.onFootChecked) {
             const tourDuration: TourDuration = {
                 duration: this.data.walkingDuration,
@@ -88,7 +92,7 @@ export class PublishTourModalComponent {
             this.handleUncheckedDurations(this.data.tour, TransportType.Car);
         }
 
-        this.service.updateTour(tour).subscribe({
+        this.service.addDurations(tour).subscribe({
             next: () => {
                 if (
                     tour.keyPoints!.length > 1 &&
