@@ -47,6 +47,13 @@ export class TourAuthoringService {
         );
     }
 
+    addDurations(tour: Tour): Observable<Tour> {
+        return this.http.put<Tour>(
+            environment.apiHost + "tour/durations/" + tour.id,
+            tour,
+        );
+    }
+
     getKeyPoints(tourId: number): Observable<KeyPoint[]> {
         return this.http.get<KeyPoint[]>(
             environment.apiHost +
