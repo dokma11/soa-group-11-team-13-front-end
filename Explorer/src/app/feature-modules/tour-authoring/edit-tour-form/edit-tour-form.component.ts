@@ -2,12 +2,9 @@ import {
     Component,
     EventEmitter,
     Inject,
-    Input,
-    OnChanges,
     OnInit,
     Output,
 } from "@angular/core";
-import { AdministrationService } from "../../administration/administration.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Tour } from "../model/tour.model";
@@ -54,7 +51,6 @@ export class EditTourFormComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        // console.log(this.data);
         this.editTourForm.reset();
         const tourPatch = {
             name: this.data.name || null,
@@ -87,7 +83,6 @@ export class EditTourFormComponent implements OnInit {
     }
     submit(): void {
         const updatedData = this.editTourForm.value;
-        // console.log(updatedData);
         const tour: Tour = {
             id: this.data.id,
             name: updatedData.name || "",
@@ -96,9 +91,10 @@ export class EditTourFormComponent implements OnInit {
             tags: updatedData.tags ? updatedData.tags : [],
             price: parseInt(updatedData.price || "0"),
             durations: this.data.durations,
+            publishDate: this.data.publishDate,
+            archiveDate: this.data.archiveDate,
         };
 
-        // console.log(this.data.id);
         if(!this.isValidForm()){
             this.notifier.notify("error", "Please enter valid data.");
             return;

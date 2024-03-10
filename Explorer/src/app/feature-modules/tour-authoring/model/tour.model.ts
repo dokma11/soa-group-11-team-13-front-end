@@ -13,6 +13,7 @@ export interface Tour {
     isDeleted?: boolean;
     distance?: number;
     publishDate?: Date;
+    archiveDate?: Date;
     durations?: TourDuration[];
     keyPoints?: KeyPoint[];
     averageRating?: number;
