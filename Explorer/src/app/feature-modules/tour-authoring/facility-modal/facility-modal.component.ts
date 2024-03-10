@@ -97,6 +97,9 @@ export class FacilityModalComponent implements OnInit {
 
     ngOnInit(): void {
         this.getPerson();
+        this.facilityForm.controls['category'].valueChanges.subscribe((value) => {
+            this.selectedOption = value;
+        });
     }
 
     facilityForm = new FormGroup({
@@ -146,6 +149,7 @@ export class FacilityModalComponent implements OnInit {
                         0,
                 };
                 console.log(this.category)
+                console.log(this.selectedOption)
                 if(this.isFormValid()){
                     this.service.addFacility(facility).subscribe({
                         next: result => {
