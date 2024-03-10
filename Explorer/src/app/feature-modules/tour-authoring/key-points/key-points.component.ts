@@ -1,8 +1,6 @@
 import {
     Component,
-    EventEmitter,
     OnInit,
-    Output,
     ViewChild,
 } from "@angular/core";
 import { TourAuthoringService } from "../tour-authoring.service";
@@ -10,17 +8,12 @@ import { KeyPoint } from "../model/key-point.model";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { environment } from "src/env/environment";
 import { MapService } from "src/app/shared/map/map.service";
-
-import { BehaviorSubject, Observable, Subject } from "rxjs";
-import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { PublicKeyPointsComponent } from "../public-key-points/public-key-points.component";
 import { Router } from "@angular/router";
 import { MapComponent } from "src/app/shared/map/map.component";
-import { TourComponent } from "../tour/tour.component";
-import { PagedResults } from "src/app/shared/model/paged-results.model";
 import { Tour, TourStatus } from "../model/tour.model";
-import { FormControl, FormGroup } from "@angular/forms";
-import { TourDuration, TransportType } from "../model/tourDuration.model";
+import { TransportType } from "../model/tourDuration.model";
 import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { NotifierService } from "angular-notifier";
 import { xpError } from "src/app/shared/model/error.model";
@@ -60,10 +53,8 @@ export class KeyPointsComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private service: TourAuthoringService,
-        private mapService: MapService,
         public dialogRef: MatDialog,
         private notifier: NotifierService,
-        private router: Router,
     ) {}
 
     ngOnInit(): void {
@@ -129,7 +120,6 @@ export class KeyPointsComponent implements OnInit {
         } else {
             if (this.tour?.distance) {
                 this.calculateDurations(this.tour.distance);
-                // this.handleCheckBoxes(this.tour);
             }
         }
     }
@@ -194,7 +184,6 @@ export class KeyPointsComponent implements OnInit {
 
     openPublicKeyPointsDialog() {
         const dialogRef = this.dialogRef.open(PublicKeyPointsComponent, {
-            //data: this.listaJavnihTacaka, // lista javnih tacaka koju dobijam u ovoj komponenti i ovim je saljem u modalni dijalog
             data: {
                 tourId: this.tour?.id!,
                 keyPoints: this.keyPoints,
@@ -205,7 +194,6 @@ export class KeyPointsComponent implements OnInit {
             let waypoints = [...this.mapComponent.waypointMap.values()];
             this.mapComponent.setRoute(waypoints);
             this.getKeyPoints();
-            // console.log(this.mapComponent.tourDistance);
         });
     }
 
@@ -225,7 +213,7 @@ export class KeyPointsComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             this.getKeyPoints();
-          });
+        });
     }
 
     openEditKeyPointDialog(kp: KeyPoint) {
@@ -250,79 +238,6 @@ export class KeyPointsComponent implements OnInit {
           });
     }
 
-    // async onBackClicked(): Promise<void> {
-    //     if (this.mapComponent) {
-    //         try {
-    //             const result: Tour | undefined = await this.service
-    //                 .getTour(this.tour?.id!)
-    //                 .toPromise();
-    //             if (result) {
-    //                 this.tour = result;
-    //                 if (this.mapComponent.waypointMap.size > 1) {
-    //                     this.tour.distance =
-    //                         Math.round(this.mapComponent.tourDistance * 100) /
-    //                         100;
-    //                     this.distance =
-    //                         Math.round(this.mapComponent.tourDistance * 100) /
-    //                         100;
-    //                 } else {
-    //                     this.tour.distance = 0;
-    //                 }
-
-    //                 if (this.checkBoxForm.value.onFootChecked) {
-    //                     const tourDuration: TourDuration = {
-    //                         duration: this.walkingDuration,
-    //                         transportType: TransportType.Walking,
-    //                     };
-
-    //                     this.handleCheckedDurations(this.tour, tourDuration);
-    //                 } else {
-    //                     this.handleUncheckedDurations(
-    //                         this.tour,
-    //                         TransportType.Walking,
-    //                     );
-    //                 }
-
-    //                 if (this.checkBoxForm.value.bicycleRideChecked) {
-    //                     const tourDuration: TourDuration = {
-    //                         duration: this.bicycleRideDuration,
-    //                         transportType: TransportType.Bicycle,
-    //                     };
-
-    //                     this.handleCheckedDurations(this.tour, tourDuration);
-    //                 } else {
-    //                     this.handleUncheckedDurations(
-    //                         this.tour,
-    //                         TransportType.Bicycle,
-    //                     );
-    //                 }
-
-    //                 if (this.checkBoxForm.value.carRideChecked) {
-    //                     const tourDuration: TourDuration = {
-    //                         duration: this.carRideDuration,
-    //                         transportType: TransportType.Car,
-    //                     };
-
-    //                     this.handleCheckedDurations(this.tour, tourDuration);
-    //                 } else {
-    //                     this.handleUncheckedDurations(
-    //                         this.tour,
-    //                         TransportType.Car,
-    //                     );
-    //                 }
-
-    //                 await this.service.updateTour(this.tour).toPromise();
-    //             } else {
-    //                 console.error("Result is undefined");
-    //             }
-    //         } catch (err) {
-    //             console.error(err);
-    //         }
-    //     }
-
-    //     this.router.navigate(["/tours"]);
-    // }
-
     calculateDurations(distance: number): void {
         this.walkingDuration =
             Math.round((distance / 3.6) * 60) + this.keyPoints.length * 15;
@@ -345,21 +260,4 @@ export class KeyPointsComponent implements OnInit {
             }
         }
     }
-
-    // handleCheckBoxes(tour: Tour): void {
-    //     // Tick all necessary checkboxes
-    //     if (tour.durations) {
-    //         for (let t of tour.durations) {
-    //             if (t.transportType == TransportType.Walking) {
-    //                 this.checkBoxForm.get("onFootChecked")?.patchValue(true);
-    //             } else if (t.transportType == TransportType.Bicycle) {
-    //                 this.checkBoxForm
-    //                     .get("bicycleRideChecked")
-    //                     ?.patchValue(true);
-    //             } else if (t.transportType == TransportType.Car) {
-    //                 this.checkBoxForm.get("carRideChecked")?.patchValue(true);
-    //             }
-    //         }
-    //     }
-    // }
 }

@@ -110,7 +110,12 @@ export class FacilitiesComponent implements OnInit {
         dialogRef.componentInstance.facilityCreated.subscribe(facility => {
             this.facilities.push(facility);
         });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.getFacilities();
+        });
     }
+
     openEditFacilityDialog(f: Facilities) {
         const dialogRef = this.dialogRef.open(FacilityModalComponent, {
             data: {
@@ -122,6 +127,10 @@ export class FacilitiesComponent implements OnInit {
         dialogRef.componentInstance.facilityUpdated.subscribe(facility => {
             let index = this.facilities.findIndex(x => x.id == facility.id);
             this.facilities[index] = facility;
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.getFacilities();
         });
     }
 
