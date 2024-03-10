@@ -204,17 +204,12 @@ export class TourComponent implements OnInit {
     }
 
     onEditClicked(tour: Tour): void {
-        //this.selectedTour = tour;
-        //this.shouldRenderTourForm = true;
-        //this.shouldEdit = true;
         this.dialogRef.open(EditTourFormComponent, {
             data: tour,
         });
     }
 
     onAddClicked(): void {
-        //this.shouldEdit = false;
-        //this.shouldRenderTourForm = true;
         const addDialog = this.dialogRef.open(AddTourFormComponent, {
             data: {
                 userId: this.user.id,
@@ -223,6 +218,10 @@ export class TourComponent implements OnInit {
         addDialog.componentInstance.toursUpdated.subscribe(tour => {
             this.tours.push(tour);
         });
+
+        addDialog.afterClosed().subscribe(result => {
+            this.getTours();
+          });
     }
 
     onArchiveClicked(tour: Tour): void {

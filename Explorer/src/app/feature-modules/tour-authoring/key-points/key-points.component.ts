@@ -222,7 +222,12 @@ export class KeyPointsComponent implements OnInit {
             this.keyPoints = this.keyPoints.slice();
             this.tour?.keyPoints?.push(keyPoint);
         });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.getKeyPoints();
+          });
     }
+
     openEditKeyPointDialog(kp: KeyPoint) {
         const dialogRef = this.dialogRef.open(KeyPointModalComponent, {
             data: {
@@ -239,6 +244,10 @@ export class KeyPointsComponent implements OnInit {
             index = this.tour!.keyPoints!.findIndex(x => x.id == keyPoint.id);
             this.tour!.keyPoints![index] = keyPoint;
         });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.getKeyPoints();
+          });
     }
 
     // async onBackClicked(): Promise<void> {
