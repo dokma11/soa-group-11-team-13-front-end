@@ -47,6 +47,7 @@
                     class="tour-action red"
                     *ngIf="tour.status == 2 || tour.status == 0"
                     [icon]="faTrash"
+                    (click)="delete(tour.id!); $event.stopPropagation()"
                     tooltipPosition="bottom"
                     pTooltip="delete"
                 />
