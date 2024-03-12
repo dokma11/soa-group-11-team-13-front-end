@@ -98,36 +98,16 @@ export class FacilitiesFormComponent implements OnChanges {
             facility.longitude = this.newLongitude;
             facility.latitude = this.newLatitude;
 
-            /*this.service.addFacility(facility).subscribe({
-                next: result => {
-                    this.facilitiesUpdated.emit();
-                    location.reload();
-                    if (this.facilitiesForm.value.isPublicChecked) {
-                        const request: PublicFacilityRequest = {
-                            facilityId: result.id as number,
-                            status: PublicStatus.Pending,
-                            // Dodajte komentar ako je potrebno
-                            authorName:
-                                this.person.name + " " + this.person.surname,
-                        };
-                        this.service
-                            .addPublicFacilityRequest(request)
-                            .subscribe({});
-                    }
-                },
-            });*/
             this.service.uploadImage(this.tourImageFile!).subscribe({
                 next: (imagePath: string) => {
                     facility.imagePath=imagePath;
                     this.service.addFacility(facility).subscribe({
                         next: result => {
                             this.facilitiesUpdated.emit();
-                            //location.reload();
                             if (this.facilitiesForm.value.isPublicChecked) {
                                 const request: PublicFacilityRequest = {
                                     facilityId: result.id as number,
                                     status: PublicStatus.Pending,
-                                    // Dodajte komentar ako je potrebno
                                     authorName:
                                         this.person.name + " " + this.person.surname,
                                 };
@@ -194,6 +174,7 @@ export class FacilitiesFormComponent implements OnChanges {
             });
         });
     }
+    
     onSelectImage(event: Event) {
         const element = event.currentTarget as HTMLInputElement;
         if (element.files && element.files[0]) {

@@ -213,13 +213,15 @@ export class FacilityModalComponent implements OnInit {
             imagePath: this.facilityForm.value.imagePath || "",
         };
 
-        if (!facility.imagePath) {
+        if (this.isFormValid()) {
             this.service.uploadImage(this.facilityImageFile!).subscribe({
                 next: (imagePath: string) => {
                     facility.imagePath = imagePath;
                     this.service.updateFacility(facility).subscribe({
-                        next: () => {
-                            this.facilityUpdated.emit();
+                        next: response => {
+                            this.facilityUpdated.emit(response);
+                            this.dialogRef.close();
+                            this.notifier.notify("success", "Updated facility!");
                         },
                     });
                 },
@@ -227,22 +229,6 @@ export class FacilityModalComponent implements OnInit {
                     this.notifier.notify("error", "Invalid facility image.");
                 },
             });
-        } else {
-            if(this.isFormValid())
-                this.service.updateFacility(facility).subscribe({
-                    next: response => {
-                        this.facilityUpdated.emit(response);
-                        this.dialogRef.close();
-                        this.notifier.notify("success", "Updated facility!");
-                    },
-                    error: err => {
-                        this.notifier.notify("err", xpError.getErrorMessage(err));
-                    },
-                });
-            else{
-                this.notifier.notify("error", "Invalid facility data supplied.");
-                return;
-            }
         }
     }
 
