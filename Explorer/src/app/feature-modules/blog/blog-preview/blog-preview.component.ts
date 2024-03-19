@@ -107,9 +107,9 @@ export class BlogPreviewComponent implements OnInit {
     setBlogStatus() {
         if (this.blog.voteCount < -2) {
             this.blog.status = 2;
-        } else if (this.blog.voteCount >= 3 && this.blog.comments.length >= 3) {
+        } else if (this.blog.voteCount >= 3 && this.blog.comments?.length >= 3) {
             this.blog.status = 4;
-        } else if (this.blog.voteCount >= 2 && this.blog.comments.length >= 2) {
+        } else if (this.blog.voteCount >= 2 && this.blog.comments?.length >= 2) {
             this.blog.status = 3;
         } else {
             this.blog.status = 1;

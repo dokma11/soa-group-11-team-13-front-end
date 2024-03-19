@@ -2,7 +2,6 @@
     <div class="title" *ngIf="clubId == -1">
         <select
             [(ngModel)]="selectedStatus"
-            (change)="filterByStatus(selectedStatus)"
         >
             <option value="1">Published</option>
             <option value="2">Closed</option>
@@ -11,6 +10,8 @@
             <option value="5">All</option>
         </select>
         <h1 class="blogs-title">Blogs</h1>
+        <input type="text" placeholder="Blog name" [(ngModel)]="searchName">
+        <button (click)="filter()">Search</button>
     </div>
 
     <xp-blog-preview

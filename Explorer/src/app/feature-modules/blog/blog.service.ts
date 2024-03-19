@@ -31,6 +31,10 @@ export class BlogService {
         return this.http.get<Blog>(environment.apiHost + "blog/" + id);
     }
 
+    searchByName(name: string): Observable<Blog[]> {
+        return this.http.get<Blog[]>(environment.apiHost + "blog/search/" + name);
+    }
+
     deleteBlog(id: number) {
         return this.http.delete<Blog>(
             environment.apiHost + "blog/delete/" + id,

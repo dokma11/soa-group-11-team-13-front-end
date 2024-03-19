@@ -32,6 +32,7 @@ export class BlogsComponent implements OnInit {
     user: User | undefined;
     followings: Following[] = [];
     selectedStatus: number = 5;
+    searchName: string = '';
     @Input() clubId: number = -1;
     constructor(
         private service: BlogService,
@@ -72,9 +73,23 @@ export class BlogsComponent implements OnInit {
         );
     }
 
-    filterByStatus(status: number) {
+    filter() {
+        this.filterByName();
+        this.filterByStatus();
+    }
+
+    filterByStatus() {
         this.getBlogs();
-        this.selectedStatus = status;
+    }
+
+    filterByName() {
+        this.service.searchByName(this.searchName).subscribe({
+            next: (result) => {
+                this.blogs = result;
+                this.removePrivates();
+            },
+            error: () => {}
+        })
     }
 
     getBlogs(): void {
@@ -98,7 +113,7 @@ export class BlogsComponent implements OnInit {
     }
 
     getVote(blog: Blog): Vote | undefined {
-        return blog.votes.find(x => x.userId == this.user?.id);
+        return blog.votes?.find(x => x.userId == this.user?.id);
     }
 
     upVoteBlog(blogId: number): void {
