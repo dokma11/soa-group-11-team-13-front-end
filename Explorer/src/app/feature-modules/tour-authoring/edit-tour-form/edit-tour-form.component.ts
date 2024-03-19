@@ -90,7 +90,7 @@ export class EditTourFormComponent implements OnInit {
             difficulty: parseInt(updatedData.difficulty || "0"),
             tags: updatedData.tags ? updatedData.tags : [],
             price: parseInt(updatedData.price || "0"),
-            durations: this.data.durations,
+            durations: this.data.durations ? this.data.durations : [],
             publishDate: this.data.publishDate,
             archiveDate: this.data.archiveDate,
         };

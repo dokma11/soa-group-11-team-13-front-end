@@ -209,11 +209,10 @@ export class FacilityModalComponent implements OnInit {
             longitude:
                 parseFloat(this.facilityForm.value.longitude || "0") || 0,
             latitude: parseFloat(this.facilityForm.value.latitude || "0") || 0,
-
-            imagePath: this.facilityForm.value.imagePath || "",
+            imagePath: this.facilityForm.value.imagePath || this.data.facility?.imagePath || "",
         };
 
-        if (this.isFormValid()) {
+        if (this.isFormValid() && this.facilityImageFile) {
             this.service.uploadImage(this.facilityImageFile!).subscribe({
                 next: (imagePath: string) => {
                     facility.imagePath = imagePath;
@@ -227,6 +226,19 @@ export class FacilityModalComponent implements OnInit {
                 },
                 error: err => {
                     this.notifier.notify("error", "Invalid facility image.");
+                },
+            });
+        }
+        else if(this.isFormValid()){
+            facility.imagePath = this.data.facility!.imagePath;
+            this.service.updateFacility(facility).subscribe({
+                next: response => {
+                    this.facilityUpdated.emit(response);
+                    this.dialogRef.close();
+                    this.notifier.notify("success", "Updated facility!");
+                },
+                error: err => {
+                    this.notifier.notify("error", "Invalid facility data.");
                 },
             });
         }

@@ -235,7 +235,7 @@ export class KeyPointModalComponent implements OnInit {
             hasEncounter: this.hasEncounter,
             isEncounterRequired: this.isEncounterRequired,
         };
-
+        if(this.tourImageFile){
             this.service.uploadImage(this.tourImageFile!).subscribe({
                 next: (imagePath: string) => {
                     keyPoint.imagePath = imagePath;
@@ -292,6 +292,57 @@ export class KeyPointModalComponent implements OnInit {
                     this.notifier.notify("error", "Invalid keypoint image.");
                 },
             });
+        }
+        else{
+            keyPoint.imagePath = this.data.keyPoint!.imagePath;
+                    this.mapService
+                        .reverseSearch(keyPoint.latitude, keyPoint.longitude)
+                        .subscribe(res => {
+                            let addressInfo = {
+                                number: "",
+                                street: "",
+                                city: "",
+                                postalCode: "",
+                                country: "",
+                            };
+
+                            let addressParts = res.display_name.split(",");
+
+                            addressInfo = this.setAddressInfo(
+                                addressInfo,
+                                addressParts,
+                            );
+                            let concatenatedAddress =
+                                addressInfo.number +
+                                " " +
+                                addressInfo.street +
+                                " " +
+                                addressInfo.city +
+                                " " +
+                                addressInfo.postalCode +
+                                " " +
+                                addressInfo.country;
+
+                            keyPoint.locationAddress = concatenatedAddress;
+
+                            this.service.updateKeyPoint(keyPoint).subscribe({
+                                next: response => {
+                                    this.keyPointUpdated.emit(response);
+                                    this.dialogRef.close();
+                                    this.notifier.notify(
+                                        "success",
+                                        "Updated keypoint!",
+                                    );
+                                },
+                                error: err => {
+                                    this.notifier.notify(
+                                        "error",
+                                        xpError.getErrorMessage(err),
+                                    );
+                                },
+                            });
+                        });
+        }
     }
 
     isValidForm(): boolean {
