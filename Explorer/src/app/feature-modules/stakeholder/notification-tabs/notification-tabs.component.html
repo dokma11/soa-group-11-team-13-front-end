@@ -84,23 +84,26 @@
         >
             <fa-icon [icon]="faPercentage" />Wishlist notifications
         </div>
+        <div
+            class="tab"
+            *ngIf="user.role === 'tourist'"
+            [ngClass]="{
+                'selected-tab': selectedTab === Tab.BLOGRECOMMENDATIONS
+            }"
+            (click)="setActiveTab(Tab.BLOGRECOMMENDATIONS, tabList)"
+        >
+            <fa-icon [icon]="faBlog" />Blog recommendations
+        </div>
     </div>
     <div class="tab-content">
         <xp-keypoints-notifications *ngIf="selectedTab === Tab.KEYPOINTS" />
         <xp-facilities-notifications *ngIf="selectedTab === Tab.FACILITIES" />
-        <xp-problem-resolving-notifications
-            *ngIf="selectedTab === Tab.PROBLEMRESOLVINGS"
-        />
-        <xp-shopping-notifications
-            *ngIf="selectedTab === Tab.SHOPPINGNOTIFICATIONS"
-        />
-        <xp-transaction-records-notifications
-            *ngIf="selectedTab === Tab.TRANSACTIONRECORDSNOTIFICATIONS"
-        />
+        <xp-problem-resolving-notifications *ngIf="selectedTab === Tab.PROBLEMRESOLVINGS"/>
+        <xp-shopping-notifications *ngIf="selectedTab === Tab.SHOPPINGNOTIFICATIONS"/>
+        <xp-transaction-records-notifications *ngIf="selectedTab === Tab.TRANSACTIONRECORDSNOTIFICATIONS"/>
         <xp-payment-history *ngIf="selectedTab === Tab.PAYMENTSHISTORY" />
         <xp-club-notifications *ngIf="selectedTab === Tab.CLUBS" />
-        <xp-wishlist-notifications
-            *ngIf="selectedTab === Tab.WISHLISTNOTIFICATION"
-        ></xp-wishlist-notifications>
+        <xp-wishlist-notifications *ngIf="selectedTab === Tab.WISHLISTNOTIFICATION"/>
+        <xp-blog-recommendations-notifications *ngIf="selectedTab === Tab.BLOGRECOMMENDATIONS"/>
     </div>
 </div>

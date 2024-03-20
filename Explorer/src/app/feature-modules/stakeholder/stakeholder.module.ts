@@ -25,6 +25,8 @@ import { TransactionRecordsNotificationsComponent } from "./transaction-records-
 import { UserClubsDialogComponent } from "./user-clubs-dialog/user-clubs-dialog.component";
 import { ClubNotificationsComponent } from "./club-notifications/club-notifications.component";
 import { WishlistNotificationsComponent } from "./wishlist-notifications/wishlist-notifications.component";
+import { BlogRecommendationsNotificationsComponent } from './blog-recommendations-notifications/blog-recommendations-notifications.component';
+import { ShareBlogComponent } from './share-blog/share-blog.component';
 
 @NgModule({
     declarations: [
@@ -48,6 +50,8 @@ import { WishlistNotificationsComponent } from "./wishlist-notifications/wishlis
         UserClubsDialogComponent,
         ClubNotificationsComponent,
         WishlistNotificationsComponent,
+        BlogRecommendationsNotificationsComponent,
+        ShareBlogComponent,
     ],
     imports: [
         CommonModule,

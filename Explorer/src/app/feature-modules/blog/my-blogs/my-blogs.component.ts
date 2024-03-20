@@ -90,7 +90,7 @@ export class MyBlogsComponent implements OnInit {
     }
 
     getVote(blog: Blog): Vote | undefined {
-        return blog.votes.find(x => x.userId == this.user?.id);
+        return blog.votes?.find(x => x.userId == this.user?.id);
     }
 
     upVoteBlog(blogId: number): void {
