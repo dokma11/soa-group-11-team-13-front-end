@@ -24,6 +24,7 @@ import { BundleRecord } from "./model/bundle-record.model";
 import { Club } from "../marketplace/model/club.model";
 import { WishlistNotification } from "./model/wishlist-notification.model";
 import { Problem } from "../marketplace/model/problem.model";
+import { BlogRecommendationNotification } from "./model/blog-recommendation.model";
 
 @Injectable({
     providedIn: "root",
@@ -287,5 +288,9 @@ export class StakeholderService {
         return this.http.get<WishlistNotification[]>(
             environment.apiHost + "tourist/wishlist-notification",
         );
+    }
+
+    getBlogRecommendationNotifications(): Observable<BlogRecommendationNotification[]> {
+        return this.http.get<BlogRecommendationNotification[]>(environment.apiHost + "blog/recommendations/notifications",);
     }
 }

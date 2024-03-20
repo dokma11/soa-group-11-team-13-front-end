@@ -8,6 +8,7 @@ import { Comment, CreateComment } from "./model/comment.model";
 import { Vote } from "./model/vote.model";
 import { CreateBlog } from "./model/blog-create.model";
 import { UpdateBlog } from "./model/blog-update.model";
+import { BlogRecommendationRequest } from "../stakeholder/model/blog-recommendation-request.model";
 
 @Injectable({
     providedIn: "root",
@@ -108,5 +109,9 @@ export class BlogService {
         return this.http.get<any>(
             environment.apiHost + "blog/downvote/" + blogId,
         );
+    }
+
+    shareBlog(blogRecommendationRequest: BlogRecommendationRequest): Observable<any> {
+        return this.http.post<any>(environment.apiHost + "blog/recommendations", blogRecommendationRequest);
     }
 }

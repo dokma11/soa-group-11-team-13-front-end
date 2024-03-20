@@ -1,0 +1,19 @@
+<div class="login-modal">
+    <div class="login" (click)="$event.stopPropagation()">
+        <div class="login-head">
+            <fa-icon class="login-x" [icon]="faXmark" (click)="onClose()" />
+            <div class="login-title">Share
+            </div>
+        </div>
+        <div class="login-label">Username:</div>
+        <input
+            class="login-input"
+            type="text"
+            placeholder="Username"
+            [(ngModel)]="username"
+        />
+        <button class="login-submit" (click)="login()">
+            <div class="login-submit-text">Login</div>
+        </button>
+    </div>
+</div>

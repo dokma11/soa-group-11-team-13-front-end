@@ -8,7 +8,6 @@ import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { RegistrationComponent } from "src/app/infrastructure/auth/registration/registration.component";
 import { Router } from "@angular/router";
 import { NotifierService } from "angular-notifier";
-import { xpError } from "src/app/shared/model/error.model";
 
 @Component({
     selector: "xp-login",

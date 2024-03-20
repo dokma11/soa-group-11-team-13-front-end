@@ -14,6 +14,8 @@ import { marked } from "marked";
 import * as DOMPurify from "dompurify";
 import { Router } from "@angular/router";
 import { BlogService } from "../blog.service";
+import { ShareBlogComponent } from "../../stakeholder/share-blog/share-blog.component";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 @Component({
     selector: "xp-blog-preview",
@@ -21,7 +23,7 @@ import { BlogService } from "../blog.service";
     styleUrls: ["./blog-preview.component.css"],
 })
 export class BlogPreviewComponent implements OnInit {
-    constructor(private router: Router, private service: BlogService) {}
+    constructor(private router: Router, private service: BlogService, public dialogRef: MatDialog) {}
 
     @Input() blog: Blog;
     @Input() vote: Vote | undefined;
@@ -74,6 +76,12 @@ export class BlogPreviewComponent implements OnInit {
 
     shareBlog(e: Event) {
         e.stopPropagation();
+        
+        const dialogRef = this.dialogRef.open(ShareBlogComponent, {
+            data: {
+                blogId: this.blog.id
+            },
+        });
     }
 
     handleVoteChange(voteType: VoteType) {

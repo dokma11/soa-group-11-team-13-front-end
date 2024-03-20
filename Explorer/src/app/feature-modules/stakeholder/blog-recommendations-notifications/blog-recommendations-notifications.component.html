@@ -1,0 +1,11 @@
+<div class="cards-list">
+    <div
+        class="payment"
+        *ngFor="let payment of notifications"
+    >
+    <div class="payment-column">
+        <div class="payment-header">
+            {{payment.description}}<fa-icon class="fa-coins-icon" [icon]="faBlog"/>
+        </div>
+    </div>
+</div>
