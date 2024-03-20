@@ -91,12 +91,8 @@ export class BlogService {
         );
     }
 
-    publishBlog(blog: UpdateBlog): Observable<UpdateBlog> {
-        blog.status = 1;
-        return this.http.put<UpdateBlog>(
-            environment.apiHost + "blog/update",
-            blog,
-        );
+    publishBlog(blogId: number): Observable<any> {
+        return this.http.patch<any>(environment.apiHost + "blog/publish/" + blogId, {});
     }
 
     upVoteBlog(blogId: number): Observable<any> {

@@ -74,7 +74,7 @@ export class MyBlogsComponent implements OnInit {
             authorId: 0,
             visibilityPolicy: blog.visibilityPolicy,
         };
-        this.service.publishBlog(updateBlog).subscribe({
+        this.service.publishBlog(blog.id).subscribe({
             next: _ => {
                 this.getBlogs();
             },
