@@ -25,6 +25,8 @@ import { Club } from "../marketplace/model/club.model";
 import { WishlistNotification } from "./model/wishlist-notification.model";
 import { Problem } from "../marketplace/model/problem.model";
 import { BlogRecommendationNotification } from "./model/blog-recommendation.model";
+import { User } from "src/app/infrastructure/auth/model/user.model";
+import { UserFollower } from "./model/user-follower.model";
 
 @Injectable({
     providedIn: "root",
@@ -66,26 +68,50 @@ export class StakeholderService {
             environment.apiHost + "people",
         );
     }
-    getFollowers(id: number): Observable<PagedResults<Follower>> {
-        return this.http.get<PagedResults<Follower>>(
+
+    getFollowers(id: number): Observable<PagedResults<UserFollower>> {
+        return this.http.get<PagedResults<UserFollower>>(
             environment.apiHost + "follower/followers/" + id,
         );
     }
-    getFollowings(id: number): Observable<PagedResults<Following>> {
-        return this.http.get<PagedResults<Following>>(
+
+    getFollowings(id: number): Observable<PagedResults<UserFollower>> {
+        return this.http.get<PagedResults<UserFollower>>(
             environment.apiHost + "follower/followings/" + id,
         );
     }
-    getSearched(searchUsername: string): Observable<PagedResults<UserFollow>> {
-        return this.http.get<PagedResults<UserFollow>>(
+    
+    // getFollowers(id: number): Observable<PagedResults<Follower>> {
+    //     return this.http.get<PagedResults<Follower>>(
+    //         environment.apiHost + "follower/followers/" + id,
+    //     );
+    // }
+
+    // getFollowings(id: number): Observable<PagedResults<Following>> {
+    //     return this.http.get<PagedResults<Following>>(
+    //         environment.apiHost + "follower/followings/" + id,
+    //     );
+    // }
+    
+
+    getSearched(searchUsername: string): Observable<UserFollower> {
+        return this.http.get<UserFollower>(
             environment.apiHost + "follower/search/" + searchUsername,
         );
     }
+    
+    // getSearched(searchUsername: string): Observable<PagedResults<UserFollow>> {
+    //     return this.http.get<PagedResults<UserFollow>>(
+    //         environment.apiHost + "follower/search/" + searchUsername,
+    //     );
+    // }
+
     deleteFollowing(id: number): Observable<Following> {
         return this.http.delete<Following>(
             environment.apiHost + "follower/" + id,
         );
     }
+    
     addFollowing(follow: FollowerCreate): Observable<FollowerCreate> {
         return this.http.post<FollowerCreate>(
             environment.apiHost + "follower",

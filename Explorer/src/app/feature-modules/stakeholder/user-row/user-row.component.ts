@@ -9,6 +9,8 @@ import {
     faUserCheck,
     faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import { UserFollow } from "../model/user-follow.model";
+import { UserFollower } from "../model/user-follower.model";
 
 @Component({
     selector: "xp-user-row",
@@ -17,7 +19,7 @@ import {
 })
 export class UserRowComponent {
     currentUserId: number;
-    @Input() user: User;
+    @Input() user: UserFollower;
     @Input() person: Person;
     @Input() followId: number;
     @Input() followStatus: boolean;

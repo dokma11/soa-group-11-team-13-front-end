@@ -5,6 +5,9 @@ import { UserFollow } from "../model/user-follow.model";
 import { StakeholderService } from "../stakeholder.service";
 import { Following } from "../model/following.model";
 import { FollowerCreate } from "../model/follower-create.model";
+import { User } from "src/app/infrastructure/auth/model/user.model";
+import { UserFollower } from "../model/user-follower.model";
+import { PagedResults } from "src/app/shared/model/paged-results.model";
 export interface ModalData {
     userId: number;
 }
@@ -18,7 +21,9 @@ export class FollowerSearchDialogComponent implements OnInit {
     faSearch = faSearch;
     users: UserFollow[] = [];
     followings: Following[] = [];
+    userFollowings: UserFollower[] = [];
     searchUsername: string;
+    user: UserFollower;
     constructor(
         private service: StakeholderService,
         @Inject(MAT_DIALOG_DATA) public data: ModalData,
@@ -28,38 +33,42 @@ export class FollowerSearchDialogComponent implements OnInit {
         this.userId = this.data.userId;
         this.loadFollowings();
     }
+
     loadFollowings() {
-        this.service.getFollowings(this.userId).subscribe(result => {
-            this.followings = result.results;
+        this.service.getFollowings(this.userId).subscribe({
+            next: (result: PagedResults<UserFollower>) => {
+                if (Array.isArray(result)) {
+                    this.userFollowings = result;
+                }
+            },
         });
     }
+
     follow(id: number) {
-        var clicked = this.users.find(u => u.id == id);
-        if (clicked != undefined) {
             const followCreate: FollowerCreate = {
-                userId: clicked.id,
+                userId: id,
                 followedById: this.userId,
             };
             this.service.addFollowing(followCreate).subscribe({
                 next: (result: FollowerCreate) => {
-                    if (clicked != undefined) {
-                        clicked.followingStatus = true;
-                        this.loadFollowings();
-                    }
+                   location.reload(); 
                 },
             });
         }
-    }
+
     search() {
-        this.service.getSearched(this.searchUsername).subscribe(result => {
-            this.users = result.results;
-            this.users.forEach(user => {
-                if (this.followings.some(f => user.id === f.following.id)) {
-                    user.followingStatus = true;
-                } else {
-                    user.followingStatus = false;
-                }
-            });
+        this.service.getSearched(this.searchUsername).subscribe({
+            next: (result: UserFollower) => {
+                this.user = result;    
+            },
+            //this.users = result.results;
+            // this.users.forEach(user => {
+            //     if (this.followings.some(f => user.id === f.following.id)) {
+            //         user.followingStatus = true;
+            //     } else {
+            //         user.followingStatus = false;
+            //     }
+            // });
         });
     }
 }
