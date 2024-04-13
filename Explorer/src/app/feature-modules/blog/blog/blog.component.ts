@@ -68,6 +68,7 @@ export class BlogComponent implements OnInit {
         this.service.getComments(this.blogId).subscribe({
             next: (result: PagedResults<Comment>) => {
                 this.comments = result.results;
+                console.log(this.comments);
             },
         });
     }
@@ -95,6 +96,7 @@ export class BlogComponent implements OnInit {
     onEditComment(editedComment: Comment): void {
         this.service.updateComment(editedComment).subscribe({
             next: (result: Comment) => {
+                console.log("uspeo");
                 const updatedCommentIndex = this.comments.findIndex(
                     comment => comment.id === result.id,
                 );

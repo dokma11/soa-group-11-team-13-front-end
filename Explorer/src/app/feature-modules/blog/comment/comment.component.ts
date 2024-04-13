@@ -26,7 +26,10 @@ export class CommentComponent {
     }
 
     saveChanges(): void {
+        console.log(this.comment.text);
+        console.log(this.comment.id);
         this.comment.text = this.editedText;
+        this.comment.updatedAt =  new Date().toISOString();
         this.editComment.emit(this.comment);
         this.isEditMode = false;
     }

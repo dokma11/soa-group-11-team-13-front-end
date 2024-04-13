@@ -36,9 +36,11 @@ export class BlogService {
         return this.http.get<Blog[]>(environment.apiHost + "blog/search/" + name);
     }
 
-    deleteBlog(id: number) {
+    deleteBlog(id: number) : Observable<Blog>{
+        console.log('Proba brisanja');
+        console.log(id);
         return this.http.delete<Blog>(
-            environment.apiHost + "blog/delete/" + id,
+            environment.apiHost + "blog/" + id
         );
     }
 
@@ -49,6 +51,7 @@ export class BlogService {
     }
 
     addComment(comment: CreateComment): Observable<Comment> {
+        console.log(comment);
         return this.http.post<Comment>(
             environment.apiHost + "tourist/comment",
             comment,
@@ -56,6 +59,7 @@ export class BlogService {
     }
 
     updateComment(comment: Comment): Observable<Comment> {
+        console.log(comment);
         return this.http.put<Comment>(
             environment.apiHost + "tourist/comment/" + comment.id,
             comment,
