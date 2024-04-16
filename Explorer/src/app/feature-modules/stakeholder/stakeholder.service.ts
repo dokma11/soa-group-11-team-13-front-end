@@ -319,4 +319,8 @@ export class StakeholderService {
     getBlogRecommendationNotifications(): Observable<BlogRecommendationNotification[]> {
         return this.http.get<BlogRecommendationNotification[]>(environment.apiHost + "blog/recommendations/notifications",);
     }
+
+    getRecommendedUsers(): Observable<PagedResults<UserFollower>> {
+        return this.http.get<PagedResults<UserFollower>>(environment.apiHost + "follower/recommended");
+    }
 }
