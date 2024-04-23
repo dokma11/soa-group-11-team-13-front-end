@@ -70,9 +70,6 @@ export class BlogsComponent implements OnInit {
     }
 
     removePrivates(): void {
-        console.log("usao u filter")
-        console.log(this.blogs);
-        console.log(this.user?.id);
         this.blogs = this.blogs.filter(
             b =>
                 b.authorId == this.user?.id ||
@@ -100,17 +97,15 @@ export class BlogsComponent implements OnInit {
     }
 
     getBlogs(): Observable<Blog[]> {
-        // Assuming this.clubId is set before this method is called
         const blogObservable = this.clubId === -1
             ? this.service.getBlogs()
             : this.service.getClubBlogs(this.clubId);
-    
+
         return blogObservable.pipe(
-            map((pagedResult: PagedResults<Blog>) => pagedResult.results), // Extract the results array
+            map((pagedResult: PagedResults<Blog>) => pagedResult.results), 
             tap((blogs: Blog[]) => {
                 this.blogs = blogs;
                 this.removePrivates();
-                console.log("Blogs loaded:", this.blogs);
             })
         );
     }
