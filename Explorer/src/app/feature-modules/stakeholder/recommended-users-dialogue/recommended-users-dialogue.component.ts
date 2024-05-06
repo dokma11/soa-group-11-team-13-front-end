@@ -24,7 +24,7 @@ export class RecommendedUsersDialogueComponent {
     @Inject(MAT_DIALOG_DATA) public data: ModalData){
     this.userId = data.userId;
     
-    this.stakeholderService.getRecommendedUsers().subscribe({
+    this.stakeholderService.getRecommendedUsers(this.userId).subscribe({
       next: (result: PagedResults<UserFollower>) => { 
         if(result && Array.isArray(result.results)){ 
           this.users = result.results; 

@@ -12,10 +12,8 @@ import { ProblemUpdateDeadline } from "./model/problem-update-deadline.model";
 import { ProblemCommentCreate } from "./model/problem-comment-create.model";
 import { ProblemResolvingNotification } from "./model/problem-resolving-notification.model";
 import { Message, MessageUsernames } from "./model/message.model";
-import { Follower } from "./model/follower.model";
 import { Following } from "./model/following.model";
 import { FollowerCreate } from "./model/follower-create.model";
-import { UserFollow } from "./model/user-follow.model";
 import { ShoppingNotification } from "./model/shopping-notification.model";
 import { Record } from "./model/record.model";
 import { Wallet } from "./model/wallet.model";
@@ -25,7 +23,6 @@ import { Club } from "../marketplace/model/club.model";
 import { WishlistNotification } from "./model/wishlist-notification.model";
 import { Problem } from "../marketplace/model/problem.model";
 import { BlogRecommendationNotification } from "./model/blog-recommendation.model";
-import { User } from "src/app/infrastructure/auth/model/user.model";
 import { UserFollower } from "./model/user-follower.model";
 
 @Injectable({
@@ -71,16 +68,31 @@ export class StakeholderService {
 
     getFollowers(id: number): Observable<PagedResults<UserFollower>> {
         return this.http.get<PagedResults<UserFollower>>(
-            environment.apiHost + "follower/followers/" + id,
+            `${environment.apiHost}followers?id=${id}`
         );
     }
 
     getFollowings(id: number): Observable<PagedResults<UserFollower>> {
         return this.http.get<PagedResults<UserFollower>>(
-            environment.apiHost + "follower/followings/" + id,
+            `${environment.apiHost}followings?id=${id}`
         );
     }
     
+    
+    // getFollowers(id: number): Observable<PagedResults<Follower>> {
+    //     return this.http.get<PagedResults<Follower>>(
+    //         environment.apiHost + "follower/followers/" + id,
+    //     );
+    // }
+
+    // getFollowings(id: number): Observable<PagedResults<Following>> {
+    //     return this.http.get<PagedResults<Following>>(
+    //         environment.apiHost + "follower/followings/" + id,
+    //     );
+    // }
+    
+
+
     // getFollowers(id: number): Observable<PagedResults<Follower>> {
     //     return this.http.get<PagedResults<Follower>>(
     //         environment.apiHost + "follower/followers/" + id,
@@ -96,28 +108,22 @@ export class StakeholderService {
 
     getSearched(searchUsername: string): Observable<UserFollower> {
         return this.http.get<UserFollower>(
-            environment.apiHost + "follower/search/" + searchUsername,
+            `${environment.apiHost}followers/search/${searchUsername}`
         );
     }
-    
-    // getSearched(searchUsername: string): Observable<PagedResults<UserFollow>> {
-    //     return this.http.get<PagedResults<UserFollow>>(
-    //         environment.apiHost + "follower/search/" + searchUsername,
-    //     );
-    // }
 
     deleteFollowing(id: number): Observable<Following> {
         return this.http.delete<Following>(
-            environment.apiHost + "follower/" + id,
+            `${environment.apiHost}unfollow?id=${id}`
         );
     }
     
     addFollowing(follow: FollowerCreate): Observable<FollowerCreate> {
         return this.http.post<FollowerCreate>(
-            environment.apiHost + "follower",
-            follow,
+            `${environment.apiHost}follow`, follow
         );
     }
+
     getByUserId(userId: number): Observable<Person> {
         return this.http.get<Person>(
             environment.apiHost + "people/person/" + userId,
@@ -320,7 +326,7 @@ export class StakeholderService {
         return this.http.get<BlogRecommendationNotification[]>(environment.apiHost + "blog/recommendations/notifications",);
     }
 
-    getRecommendedUsers(): Observable<PagedResults<UserFollower>> {
-        return this.http.get<PagedResults<UserFollower>>(environment.apiHost + "follower/recommended");
+    getRecommendedUsers(id: number): Observable<PagedResults<UserFollower>> {
+        return this.http.get<PagedResults<UserFollower>>(`${environment.apiHost}followers/recommended?id=${id}`);
     }
 }
