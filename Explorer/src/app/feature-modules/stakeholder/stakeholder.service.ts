@@ -24,6 +24,7 @@ import { WishlistNotification } from "./model/wishlist-notification.model";
 import { Problem } from "../marketplace/model/problem.model";
 import { BlogRecommendationNotification } from "./model/blog-recommendation.model";
 import { UserFollower } from "./model/user-follower.model";
+import { VukasinPrdi } from "./model/vukasin-prdi.model";
 
 @Injectable({
     providedIn: "root",
@@ -66,61 +67,33 @@ export class StakeholderService {
         );
     }
 
-    getFollowers(id: number): Observable<PagedResults<UserFollower>> {
-        return this.http.get<PagedResults<UserFollower>>(
-            `${environment.apiHost}followers?id=${id}`
+    getFollowers(id: number): Observable<UserFollower[]> {
+        return this.http.get<UserFollower[]>(
+            `${environment.host}followers/?ID=${id}`
         );
     }
 
     getFollowings(id: number): Observable<PagedResults<UserFollower>> {
         return this.http.get<PagedResults<UserFollower>>(
-            `${environment.apiHost}followings?id=${id}`
+            `${environment.host}followings/?ID=${id}`
         );
     }
-    
-    
-    // getFollowers(id: number): Observable<PagedResults<Follower>> {
-    //     return this.http.get<PagedResults<Follower>>(
-    //         environment.apiHost + "follower/followers/" + id,
-    //     );
-    // }
-
-    // getFollowings(id: number): Observable<PagedResults<Following>> {
-    //     return this.http.get<PagedResults<Following>>(
-    //         environment.apiHost + "follower/followings/" + id,
-    //     );
-    // }
-    
-
-
-    // getFollowers(id: number): Observable<PagedResults<Follower>> {
-    //     return this.http.get<PagedResults<Follower>>(
-    //         environment.apiHost + "follower/followers/" + id,
-    //     );
-    // }
-
-    // getFollowings(id: number): Observable<PagedResults<Following>> {
-    //     return this.http.get<PagedResults<Following>>(
-    //         environment.apiHost + "follower/followings/" + id,
-    //     );
-    // }
-    
 
     getSearched(searchUsername: string): Observable<UserFollower> {
         return this.http.get<UserFollower>(
-            `${environment.apiHost}followers/search/${searchUsername}`
+            `${environment.host}followers/search/?Username=${searchUsername}`
         );
     }
 
-    deleteFollowing(id: number): Observable<Following> {
+    deleteFollowing(id: number, followerId: number): Observable<Following> {
         return this.http.delete<Following>(
-            `${environment.apiHost}unfollow?id=${id}`
+            `${environment.host}unfollow/?followerId=${followerId}&followingId=${id}`
         );
     }
     
-    addFollowing(follow: FollowerCreate): Observable<FollowerCreate> {
-        return this.http.post<FollowerCreate>(
-            `${environment.apiHost}follow`, follow
+    addFollowing(follow: VukasinPrdi): Observable<VukasinPrdi> {
+        return this.http.post<VukasinPrdi>(
+            `${environment.host}follow/`, follow
         );
     }
 
@@ -326,7 +299,7 @@ export class StakeholderService {
         return this.http.get<BlogRecommendationNotification[]>(environment.apiHost + "blog/recommendations/notifications",);
     }
 
-    getRecommendedUsers(id: number): Observable<PagedResults<UserFollower>> {
-        return this.http.get<PagedResults<UserFollower>>(`${environment.apiHost}followers/recommended?id=${id}`);
+    getRecommendedUsers(id: number): Observable<UserFollower[]> {
+        return this.http.get<UserFollower[]>(`${environment.host}followers/recommended?ID=${id}`);
     }
 }
