@@ -9,10 +9,6 @@
             followDirection="following"
             [enableFollow]="true"
         />
-        <!-- [person]="f.followedByPerson"
-            [followId]="f.id"
-            [followStatus]="f.followingStatus"
-             -->
     </div>
     <div *ngIf="showFollowings" class="user-container">
         <xp-user-row
@@ -21,10 +17,5 @@
             (unfollowOrFollowEvent)="unfollowOrFollow($event)"
             [enableFollow]="true"
         />
-        <!-- 
-            [person]="f.followingPerson"
-            [followId]="f.id"
-            [followStatus]="f.followingStatus"
-         -->
     </div>
 </div>

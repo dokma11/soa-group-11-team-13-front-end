@@ -13,11 +13,11 @@
         <table>
             <tbody>
                 <tr *ngIf="user">
-                    <td>{{ user.username }}</td>
+                    <td>{{ user.Username }}</td>
                     <td>
                         <button
-                            *ngIf="user.username != ''"
-                            (click)="follow(user.id)"
+                            *ngIf="user.Username != ''"
+                            (click)="follow(user.ID)"
                             color="primary"
                             mat-raised-button
                         >

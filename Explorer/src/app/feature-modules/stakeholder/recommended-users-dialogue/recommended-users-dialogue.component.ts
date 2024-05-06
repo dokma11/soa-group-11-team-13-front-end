@@ -5,6 +5,7 @@ import { StakeholderService } from '../stakeholder.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { FollowerCreate } from '../model/follower-create.model';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { VukasinPrdi } from '../model/vukasin-prdi.model';
 
 export interface ModalData {
   userId: number;
@@ -25,19 +26,17 @@ export class RecommendedUsersDialogueComponent {
     this.userId = data.userId;
     
     this.stakeholderService.getRecommendedUsers(this.userId).subscribe({
-      next: (result: PagedResults<UserFollower>) => { 
-        if(result && Array.isArray(result.results)){ 
-          this.users = result.results; 
-        }
+      next: (result: any) => { 
+        this.users = result.users;
       }
     });
   }
 
   unfollowOrFollow(id: number) {
     
-    const follow: FollowerCreate = {
-      userId: id,
-      followedById: this.userId
+    const follow: VukasinPrdi = {
+      followingId: id.toString(),
+      followerId: this.userId.toString()
     };
 
     this.stakeholderService.addFollowing(follow).subscribe({

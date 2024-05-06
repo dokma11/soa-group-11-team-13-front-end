@@ -2,27 +2,19 @@
     <div class="user-info">
         <div class="column">
             <div class="username">
-                {{ "@" + user.username }}
+                {{ "@" + user.Username }}
             </div>
         </div>
     </div>
     <div class="buttons">
         <div
             *ngIf="enableFollow"
-            (click)="unfollowOrFollow(user.id)"
+            (click)="unfollowOrFollow(user.ID)"
             class="follow-btn"
         >
             <fa-icon [icon]="followStatus ? faUserPlus : faUserCheck" />
 
             {{ followStatus ? "Follow" : "Following" }}
         </div>
-        <!-- <div
-            *ngIf="followStatus"
-            (click)="openMessageDialog(user.id)"
-            class="btn message"
-        >
-            <fa-icon [icon]="faEnvelope" />
-            Message
-        </div> -->
     </div>
 </div>

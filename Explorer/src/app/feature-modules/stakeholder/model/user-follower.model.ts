@@ -1,10 +1,10 @@
 export interface UserFollower {
-  id: number;
-  username: string;
-  password: string;
+  ID: number;
+  Username: string;
+  Password: string;
   role: UserRole;
-  profilePicture: string;
-  isActive: boolean;
+  ProfilePicture: string;
+  IsActive: boolean;
 }
 
 export enum UserRole {

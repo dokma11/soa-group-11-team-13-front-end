@@ -5,9 +5,9 @@ import { UserFollow } from "../model/user-follow.model";
 import { StakeholderService } from "../stakeholder.service";
 import { Following } from "../model/following.model";
 import { FollowerCreate } from "../model/follower-create.model";
-import { User } from "src/app/infrastructure/auth/model/user.model";
 import { UserFollower } from "../model/user-follower.model";
 import { PagedResults } from "src/app/shared/model/paged-results.model";
+import { VukasinPrdi } from "../model/vukasin-prdi.model";
 export interface ModalData {
     userId: number;
 }
@@ -45,12 +45,12 @@ export class FollowerSearchDialogComponent implements OnInit {
     }
 
     follow(id: number) {
-            const followCreate: FollowerCreate = {
-                userId: id,
-                followedById: this.userId,
+            const vukasinPrdi: VukasinPrdi = {
+                followingId: id.toString(),
+                followerId: this.userId.toString(),
             };
-            this.service.addFollowing(followCreate).subscribe({
-                next: (result: FollowerCreate) => {
+            this.service.addFollowing(vukasinPrdi).subscribe({
+                next: (result: VukasinPrdi) => {
                    location.reload(); 
                 },
             });
@@ -58,17 +58,9 @@ export class FollowerSearchDialogComponent implements OnInit {
 
     search() {
         this.service.getSearched(this.searchUsername).subscribe({
-            next: (result: UserFollower) => {
-                this.user = result;    
+            next: (result: any) => {
+                this.user = result.user;    
             },
-            //this.users = result.results;
-            // this.users.forEach(user => {
-            //     if (this.followings.some(f => user.id === f.following.id)) {
-            //         user.followingStatus = true;
-            //     } else {
-            //         user.followingStatus = false;
-            //     }
-            // });
         });
     }
 }

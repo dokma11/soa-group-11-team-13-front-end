@@ -44,13 +44,10 @@ export class FollowDialogComponent implements OnInit {
 
     unfollowOrFollow(id: number): void {
         console.log(id);
-        var clicked = this.followings.find(f => f.id == id);
+        var clicked = this.followings.find(f => f.ID == id);
         if (clicked != undefined) {
-            this.service.deleteFollowing(clicked.id).subscribe({
+            this.service.deleteFollowing(clicked.ID, this.userId).subscribe({
                     next: () => {
-                        // if (clicked != undefined) {
-                        //     clicked.followingStatus = false;
-                        // }
                         location.reload();
                     },
                 });
@@ -58,51 +55,14 @@ export class FollowDialogComponent implements OnInit {
     }
 
     addFollowing(following: UserFollower): void {
-        // const followCreate: FollowerCreate = {
-        //     followedById: this.userId,
-        //     userId: following.following.id,
-        // };
-        // this.service.addFollowing(followCreate).subscribe({
-        //     next: (result: FollowerCreate) => {
-        //         console.log(result.id);
-        //         if (result.id != undefined) {
-        //             following.id = result.id;
-        //         }
-        //         following.followingStatus = true;
-        //     },
-        // });
+        
     }
 
     removeOrFollow(id: number): void {
-        var clicked = this.followers.find(f => f.id == id);
-        // if (clicked != undefined) {
-        //     if (clicked.followingStatus) {
-        //         this.service.deleteFollowing(id).subscribe({
-        //             next: () => {
-        //                 if (clicked != undefined) {
-        //                     clicked.followingStatus = false;
-        //                 }
-        //             },
-        //         });
-        //     } else {
-        //         this.addFollower(id, clicked);
-        //     }
-        // }
+        var clicked = this.followers.find(f => f.ID == id);
     }
 
     addFollower(id: number, follwer: UserFollower): void {
-        // const followCreate: FollowerCreate = {
-        //     userId: this.userId,
-        //     followedById: follwer.followedBy.id,
-        // };
-        // this.service.addFollowing(followCreate).subscribe({
-        //     next: (result: FollowerCreate) => {
-        //         console.log(result.id);
-        //         if (result.id != undefined) {
-        //             follwer.id = result.id;
-        //         }
-        //         follwer.followingStatus = true;
-        //     },
-        // });
+        
     }
 }

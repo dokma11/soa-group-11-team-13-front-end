@@ -64,7 +64,7 @@ export class BlogsComponent implements OnInit {
     checkIfFollowing(authorId: number): any {
         var found = false;
         this.followings.forEach(function (value) {
-            if (value.id == authorId) found = true;
+            if (value.ID == authorId) found = true;
         });
         return found;
     }
