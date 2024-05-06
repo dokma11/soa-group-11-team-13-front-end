@@ -68,24 +68,23 @@ export class UserProfileComponent implements OnInit {
     }
 
     loadFollowings() {
-        this.service.getFollowings(this.user.id).subscribe(result => {
-            this.followings = result.results;
-            this.followingsCount = this.followings.length;
-            // this.followings.forEach(item => {
-            //     item.followingStatus = true;
-            // });
-        });
+        this.service.getFollowings(this.user.id).subscribe({
+            next: (result: any) => {
+                this.followings = result.users;
+                this.followingsCount = this.followings.length;
+            }
+        })
     }
 
     loadFollowers() {
-        this.service.getFollowers(this.user.id).subscribe(result => {
-            this.followers = result.results;
-            this.followersCount = this.followers.length;
-            // this.followers.forEach(item => {
-            //     item.followingStatus = true;
-            // });
-        });
+        this.service.getFollowers(this.user.id).subscribe({
+            next: (result: any) => {
+                this.followers = result.users;
+                this.followersCount = this.followers.length;
+            }
+        })
     }
+
     loadWallet() {
         if(this.user.role !== 'tourist'){
             return;
