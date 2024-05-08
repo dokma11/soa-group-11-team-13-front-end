@@ -32,8 +32,8 @@ export class EquipmentComponent implements OnInit {
 
   getEquipment(): void {
     this.service.getEquipment().subscribe({
-      next: (result: PagedResults<Equipment>) => {
-        this.equipment = result.results;
+      next: (result: any) => {
+        this.equipment = result.equipment;
       },
       error: () => {
       }

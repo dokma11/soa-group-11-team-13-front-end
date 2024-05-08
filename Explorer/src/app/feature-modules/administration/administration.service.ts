@@ -31,10 +31,8 @@ export class AdministrationService {
         );
     }
 
-    getEquipment(): Observable<PagedResults<Equipment>> {
-        return this.http.get<PagedResults<Equipment>>(
-            environment.apiHost + "administration/equipment",
-        );
+    getEquipment(): Observable<Equipment[]> {
+        return this.http.get<Equipment[]>(`${environment.host}equipment`);
     }
 
     getRatings(): Observable<PagedResults<UserRating>> {
@@ -44,16 +42,11 @@ export class AdministrationService {
     }
 
     deleteEquipment(id: number): Observable<Equipment> {
-        return this.http.delete<Equipment>(
-            environment.apiHost + "administration/equipment/" + id,
-        );
+        return this.http.delete<Equipment>(`${environment.host}equipment/?ID=${id}`,);
     }
 
     addEquipment(equipment: Equipment): Observable<Equipment> {
-        return this.http.post<Equipment>(
-            environment.apiHost + "administration/equipment",
-            equipment,
-        );
+        return this.http.post<Equipment>(`${environment.host}equipment`, { equipment });
     }
 
     updateEquipment(equipment: Equipment): Observable<Equipment> {
