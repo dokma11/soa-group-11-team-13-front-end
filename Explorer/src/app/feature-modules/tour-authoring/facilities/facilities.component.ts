@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Facilities } from "../model/facilities.model";
 import { TourAuthoringService } from "../tour-authoring.service";
-import { PagedResults } from "src/app/shared/model/paged-results.model";
 import { MapComponent } from "src/app/shared/map/map.component";
 import { FacilitiesFormComponent } from "../facilities-form/facilities-form.component";
 import { MatDialog } from "@angular/material/dialog";
@@ -9,6 +8,8 @@ import { FacilityModalComponent } from "../facility-modal/facility-modal.compone
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { NotifierService } from "angular-notifier";
 import { xpError } from "src/app/shared/model/error.model";
+import { AuthService } from "src/app/infrastructure/auth/auth.service";
+import { User } from "src/app/infrastructure/auth/model/user.model";
 
 @Component({
     selector: "xp-facilities",
@@ -26,29 +27,38 @@ export class FacilitiesComponent implements OnInit {
     shouldEdit: boolean = false;
     shouldRenderFacilitiesForm: boolean = false;
     facilityContainer: any;
+
+    user: User | undefined;
+
     constructor(
         private service: TourAuthoringService,
         public dialogRef: MatDialog,
         private route: ActivatedRoute,
         private notifier: NotifierService,
+        private authService: AuthService,
     ) {}
 
     ngOnInit(): void {
         this.facilityContainer = document.querySelector(
             ".key-point-cards-container",
         );
+
+        this.authService.user$.subscribe(user => {
+            this.user = user;
+        });
+
         this.getFacilities();
     }
 
     getFacilities(): void {
-        this.service.getAuthorsFacilities().subscribe({
-            next: (result: PagedResults<Facilities>) => {
-                this.facilities = result.results;
+        this.service.getAuthorsFacilities(this.user!.id).subscribe({
+            next: (result: any) => {
+                this.facilities = result.facilities;
 
                 for (let f of this.facilities) {
                     this.mapComponent.setMarkersForAllFacilities(
-                        f.latitude,
-                        f.longitude,
+                        f.Latitude,
+                        f.Longitude,
                     );
                 }
             },
@@ -73,7 +83,7 @@ export class FacilitiesComponent implements OnInit {
     onTableRowClicked(facility: Facilities): void {
         this.selectedFacility = facility;
         if (this.mapComponent) {
-            this.mapComponent.setMarker(facility.latitude, facility.longitude);
+            this.mapComponent.setMarker(facility.Latitude, facility.Longitude);
             this.mapComponent.facilitiesUsed = true;
         }
     }
@@ -125,7 +135,7 @@ export class FacilitiesComponent implements OnInit {
         });
 
         dialogRef.componentInstance.facilityUpdated.subscribe(facility => {
-            let index = this.facilities.findIndex(x => x.id == facility.id);
+            let index = this.facilities.findIndex(x => x.ID == facility.ID);
             this.facilities[index] = facility;
         });
 
@@ -140,7 +150,7 @@ export class FacilitiesComponent implements OnInit {
                 this.service.deleteFacility(id).subscribe({
                     next: () => {
                         this.facilities = this.facilities.filter(
-                            x => x.id != id,
+                            x => x.ID != id,
                         );
                         this.notifier.notify("success", "Removed facility.");
                     },

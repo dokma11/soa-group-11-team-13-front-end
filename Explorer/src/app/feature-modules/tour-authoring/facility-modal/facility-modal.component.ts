@@ -31,6 +31,7 @@ import { LocationCoords } from "src/app/shared/model/location-coords.model";
 import { xpError } from "src/app/shared/model/error.model";
 import { Facilities } from "../model/facilities.model";
 import { PublicFacilityRequest } from "../model/public-facility-request.model";
+import { User } from "src/app/infrastructure/auth/model/user.model";
 
 export interface AddFacilityModalData {
     facility?: Facilities;
@@ -53,6 +54,7 @@ export class FacilityModalComponent implements OnInit {
     category: string;
     faImage = faImage;
     faLocation = faMapLocationDot;
+    user: User | undefined;
 
     constructor(
         private service: TourAuthoringService,
@@ -66,16 +68,16 @@ export class FacilityModalComponent implements OnInit {
         this.isUpdateForm = data.isUpdateForm;
         this.facility = data.facility;
         if (this.isUpdateForm) {
-            this.facilityImage = this.facility!.imagePath!.startsWith("http")
-                ? this.facility!.imagePath!
-                : environment.imageHost + this.facility!.imagePath;
+            this.facilityImage = this.facility!.ImagePath!.startsWith("http")
+                ? this.facility!.ImagePath!
+                : environment.imageHost + this.facility!.ImagePath;
             const facilityToPatch = {
-                name: this.facility!.name || null,
-                description: this.facility!.description || null,
-                imagePath: this.facility!.imagePath || null,
+                name: this.facility!.Name || null,
+                description: this.facility!.Description || null,
+                imagePath: this.facility!.ImagePath || null,
                 category: this.facility!.category.toString() || null,
-                longitude: this.facility!.longitude.toString() || null,
-                latitude: this.facility!.latitude.toString() || null,
+                longitude: this.facility!.Longitude.toString() || null,
+                latitude: this.facility!.Latitude.toString() || null,
             };
             this.facilityForm.patchValue(facilityToPatch);
         }
@@ -135,28 +137,29 @@ export class FacilityModalComponent implements OnInit {
         this.service.uploadImage(this.facilityImageFile!).subscribe({
             next: (imagePath: string) => {
                 const facility: Facilities = {
-                    name: this.facilityForm.value.name || "",
-                    description: this.facilityForm.value.description || "",
-                    imagePath: imagePath,
+                    Name: this.facilityForm.value.name || "",
+                    Description: this.facilityForm.value.description || "",
+                    ImagePath: imagePath,
                     category: this.selectedOption
                         ? parseInt(this.selectedOption, 10)
                         : 0,
-                    longitude:
+                    Longitude:
                         parseFloat(this.facilityForm.value.longitude || "0") ||
                         0,
-                    latitude:
+                    Latitude:
                         parseFloat(this.facilityForm.value.latitude || "0") ||
                         0,
                 };
                 console.log(this.category)
                 console.log(this.selectedOption)
+                facility.AuthorId = this.user?.id;
                 if(this.isFormValid()){
                     this.service.addFacility(facility).subscribe({
                         next: result => {
                             this.facilityCreated.emit(result);
                             if (this.facilityForm.value.isPublicChecked) {
                                 const request: PublicFacilityRequest = {
-                                    facilityId: result.id as number,
+                                    facilityId: result.ID as number,
                                     status: PublicStatus.Pending,
                                     authorName:
                                         this.person.name +
@@ -200,22 +203,23 @@ export class FacilityModalComponent implements OnInit {
             return;
         }
         let facility: Facilities = {
-            id: this.facility!.id!,
-            name: this.facilityForm.value.name || "",
-            description: this.facilityForm.value.description || "",
+            ID: this.facility!.ID!,
+            Name: this.facilityForm.value.name || "",
+            Description: this.facilityForm.value.description || "",
             category: this.selectedOption
                 ? parseInt(this.selectedOption, 10)
                 : 0,
-            longitude:
+            Longitude:
                 parseFloat(this.facilityForm.value.longitude || "0") || 0,
-            latitude: parseFloat(this.facilityForm.value.latitude || "0") || 0,
-            imagePath: this.facilityForm.value.imagePath || this.data.facility?.imagePath || "",
+            Latitude: parseFloat(this.facilityForm.value.latitude || "0") || 0,
+            ImagePath: this.facilityForm.value.imagePath || this.data.facility?.ImagePath || "",
         };
 
         if (this.isFormValid() && this.facilityImageFile) {
             this.service.uploadImage(this.facilityImageFile!).subscribe({
                 next: (imagePath: string) => {
-                    facility.imagePath = imagePath;
+                    facility.ImagePath = imagePath;
+                    facility.AuthorId = this.user?.id;
                     this.service.updateFacility(facility).subscribe({
                         next: response => {
                             this.facilityUpdated.emit(response);
@@ -230,7 +234,7 @@ export class FacilityModalComponent implements OnInit {
             });
         }
         else if(this.isFormValid()){
-            facility.imagePath = this.data.facility!.imagePath;
+            facility.ImagePath = this.data.facility!.ImagePath;
             this.service.updateFacility(facility).subscribe({
                 next: response => {
                     this.facilityUpdated.emit(response);
@@ -258,6 +262,7 @@ export class FacilityModalComponent implements OnInit {
 
     getPerson(): void {
         this.authService.user$.subscribe(user => {
+            this.user = user;
             this.service.getPerson(user.id).subscribe(result => {
                 this.person = result;
             });

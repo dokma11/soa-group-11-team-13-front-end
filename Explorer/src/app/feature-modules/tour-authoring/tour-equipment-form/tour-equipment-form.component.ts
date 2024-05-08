@@ -3,7 +3,7 @@ import { Equipment } from '../model/equipment.model';
 import { TourAuthoringService } from '../tour-authoring.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
 import { ActivatedRoute } from '@angular/router'
-import { Tour } from '../model/tour.model';
+import { addTourEquipmentMessage } from '../model/addTourEquipment-message.model';
 
 @Component({
   selector: 'xp-tour-equipment-form',
@@ -40,8 +40,8 @@ export class TourEquipmentFormComponent implements OnInit{
 
   getAllEquipment(): void{
     this.service.getEquipment().subscribe({
-      next: (result: PagedResults<Equipment>) => {
-        this.allEquipment = result.results;
+      next: (result: any) => {
+        this.allEquipment = result.Equipment;
       },
       error: (err:any) =>{
         console.log(err);
@@ -49,7 +49,12 @@ export class TourEquipmentFormComponent implements OnInit{
     })
   }
   onAddClicked(eqId: number): void {
-      this.service.addTourEquipment(this.id,eqId).subscribe({
+      const addTourEquipmentMessage : addTourEquipmentMessage = {
+        tourId : this.id.toString(),
+        equipmentId : eqId.toString(),
+      }
+
+      this.service.addTourEquipment(addTourEquipmentMessage).subscribe({
         next: ( ) =>{
           this.getTourEquiupment();
         }

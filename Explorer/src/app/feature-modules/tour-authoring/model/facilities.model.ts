@@ -1,10 +1,10 @@
 export interface Facilities {
-    id?: number;
-    name: string;
-    description?: string;
-    imagePath?: string;
-    authorId?: number;
+    ID?: number;
+    Name: string;
+    Description?: string;
+    ImagePath?: string;
+    AuthorId?: number;
     category: number;
-    longitude: number;
-    latitude: number;
+    Longitude: number;
+    Latitude: number;
 }

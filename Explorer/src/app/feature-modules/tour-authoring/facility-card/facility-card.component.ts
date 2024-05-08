@@ -28,13 +28,13 @@ export class FacilityCardComponent implements OnInit {
 
     ngOnInit(): void {
         if (!this.isAddNew) {
-            this.facilityImage = this.facility.imagePath!.startsWith("http")
-                ? this.facility.imagePath!
-                : environment.imageHost + this.facility.imagePath;
+            this.facilityImage = this.facility.ImagePath!.startsWith("http")
+                ? this.facility.ImagePath!
+                : environment.imageHost + this.facility.ImagePath;
         }
     }
 
     delete() {
-        this.deleteClicked.emit(this.facility.id!);
+        this.deleteClicked.emit(this.facility.ID!);
     }
 }

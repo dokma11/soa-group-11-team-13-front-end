@@ -13,6 +13,7 @@ import { PublicKeyPoint } from "./model/public-key-point.model";
 import { Person } from "../stakeholder/model/person.model";
 import { Bundle } from "./model/bundle.model";
 import { BundleCreation } from "./model/bundle-creation.model";
+import { addTourEquipmentMessage } from "./model/addTourEquipment-message.model";
 
 @Injectable({
     providedIn: "root",
@@ -102,42 +103,28 @@ export class TourAuthoringService {
         });
     }
 
-    getFacilities(): Observable<PagedResults<Facilities>> {
-        return this.http.get<PagedResults<Facilities>>(
-            environment.apiHost + "facility",
-        );
+    getFacilities(): Observable<Facilities[]> {
+        return this.http.get<Facilities[]>(`${environment.host}facility`);
     }
 
-    getAuthorsFacilities(): Observable<PagedResults<Facilities>> {
-        return this.http.get<PagedResults<Facilities>>(
-            environment.apiHost + "facility/authorsFacilities",
-        );
+    getAuthorsFacilities(authorId: number): Observable<Facilities[]> {
+        return this.http.get<Facilities[]>(`${environment.host}facility/authorsFacilities/?AuthorId=${authorId}`,);
     }
 
     addFacility(facility: Facilities): Observable<Facilities> {
-        return this.http.post<Facilities>(
-            environment.apiHost + "facility",
-            facility,
-        );
+        return this.http.post<Facilities>(`${environment.host}facility`, { facility });
     }
 
     updateFacility(facility: Facilities): Observable<Facilities> {
-        return this.http.put<Facilities>(
-            environment.apiHost + "facility/" + facility.id,
-            facility,
-        );
+        return this.http.put<Facilities>(`${environment.host}facility`, { facility });
     }
 
     deleteFacility(id: number): Observable<Facilities> {
-        return this.http.delete<Facilities>(
-            environment.apiHost + "facility/" + id,
-        );
+        return this.http.delete<Facilities>(`${environment.host}facility/?ID=${id}`);
     }
 
-    getEquipment(): Observable<PagedResults<Equipment>> {
-        return this.http.get<PagedResults<Equipment>>(
-            environment.apiHost + "author/equipment",
-        );
+    getEquipment(): Observable<Equipment[]> {
+        return this.http.get<Equipment[]>(`${environment.host}equipment`);
     }
 
     getTourEquipment(id: number): Observable<PagedResults<Equipment>> {
@@ -146,17 +133,12 @@ export class TourAuthoringService {
         );
     }
 
-    addTourEquipment(tourId: number, eqId: number): Observable<Tour> {
-        return this.http.post<Tour>(
-            environment.apiHost + "tour/equipment/" + tourId + "/" + eqId,
-            {},
-        );
+    addTourEquipment(addTourEquipmentMessage: addTourEquipmentMessage): Observable<Tour> {
+        return this.http.post<Tour>(`${environment.host}tour/equipment`, addTourEquipmentMessage,);
     }
 
     deleteTourEquipment(tourId: number, eqId: number): Observable<Tour> {
-        return this.http.delete<Tour>(
-            environment.apiHost + "tour/equipment/" + tourId + "/" + eqId,
-        );
+        return this.http.delete<Tour>(`${environment.host}tour/equipment/?tourId=${tourId}&equipmentId=${eqId}`);
     }
 
     addPublicKeyPointRequest(
