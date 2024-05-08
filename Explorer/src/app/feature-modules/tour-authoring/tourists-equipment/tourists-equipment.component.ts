@@ -29,8 +29,8 @@ export class TouristsEquipmentComponent {
 
   getTourEquiupment(): void{
     this.service.getTourEquipment(this.id).subscribe({
-      next: (result: PagedResults<Equipment>) => {
-        this.equipment = result.results;
+      next: (result: any) => {
+        this.equipment = result.equipment;
       },
       error: (err:any) =>{
         console.log(err);

@@ -47,8 +47,8 @@ export class TouristsTourBlogFormComponent {
                         this.tourAuthoringService
                             .getTourEquipment(this.tour.id)
                             .subscribe({
-                                next: result => {
-                                    this.equipment = result.results;
+                                next: (result : any) => {
+                                    this.equipment = result.equipment;
 
                                     let equipmentString = "";
                                     if (this.equipment) {

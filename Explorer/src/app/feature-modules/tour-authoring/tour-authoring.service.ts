@@ -21,18 +21,16 @@ import { addTourEquipmentMessage } from "./model/addTourEquipment-message.model"
 export class TourAuthoringService {
     constructor(private http: HttpClient) {}
 
-    getTours(): Observable<PagedResults<Tour>> {
-        return this.http.get<PagedResults<Tour>>(
-            environment.apiHost + "tour/authors",
-        );
+    getTours(authorId: number): Observable<Tour[]> {
+        return this.http.get<Tour[]>(`${environment.host}tour/authors/?AuthorId=${authorId}`);
     }
 
     addTour(tour: Tour): Observable<Tour> {
-        return this.http.post<Tour>(environment.apiHost + "tour", tour);
+        return this.http.post<Tour>(`${environment.host}tour`, { tour } );
     }
 
     deleteTour(id: number): Observable<Tour> {
-        return this.http.delete<Tour>(environment.apiHost + "tour/" + id);
+        return this.http.delete<Tour>(`${environment.host}tour/?ID=${id}`);
     }
 
     deleteTourAdmin(id: number): Observable<Tour> {
@@ -42,57 +40,27 @@ export class TourAuthoringService {
     }
 
     updateTour(tour: Tour): Observable<Tour> {
-        return this.http.put<Tour>(
-            environment.apiHost + "tour/" + tour.id,
-            tour,
-        );
+        return this.http.put<Tour>(`${environment.host}tour`, { tour });
     }
 
     addDurations(tour: Tour): Observable<Tour> {
-        return this.http.put<Tour>(
-            environment.apiHost + "tour/durations/" + tour.id,
-            tour,
-        );
+        return this.http.put<Tour>(`${environment.host}tour/durations`, { tour });
     }
 
     getKeyPoints(tourId: number): Observable<KeyPoint[]> {
-        return this.http.get<KeyPoint[]>(
-            environment.apiHost +
-                "market-place/tours/" +
-                tourId +
-                "/key-points",
-        );
+        return this.http.get<KeyPoint[]>(`${environment.host}market-place/tours/key-points/?TourId=${tourId}`);
     }
 
     deleteKeyPoint(tourId: number, id: number): Observable<KeyPoint> {
-        return this.http.delete<KeyPoint>(
-            environment.apiHost +
-                "tour-authoring/tours/" +
-                tourId +
-                "/key-points/" +
-                id,
-        );
+        return this.http.delete<KeyPoint>(`${environment.host}tour-authoring/tours/key-points/?ID=${id}`);
     }
 
     addKeyPoint(keyPoint: KeyPoint): Observable<KeyPoint> {
-        return this.http.post<KeyPoint>(
-            environment.apiHost +
-                "tour-authoring/tours/" +
-                keyPoint.tourId +
-                "/key-points",
-            keyPoint,
-        );
+        return this.http.post<KeyPoint>(`${environment.host}tour-authoring/tours/key-points/`, { keyPoint });
     }
 
     updateKeyPoint(keyPoint: KeyPoint): Observable<KeyPoint> {
-        return this.http.put<KeyPoint>(
-            environment.apiHost +
-                "tour-authoring/tours/" +
-                keyPoint.tourId +
-                "/key-points/" +
-                keyPoint.id,
-            keyPoint,
-        );
+        return this.http.put<KeyPoint>(`${environment.host}tour-authoring/tours/key-points/`, { keyPoint });
     }
 
     uploadImage(image: File): Observable<string> {
@@ -127,10 +95,8 @@ export class TourAuthoringService {
         return this.http.get<Equipment[]>(`${environment.host}equipment`);
     }
 
-    getTourEquipment(id: number): Observable<PagedResults<Equipment>> {
-        return this.http.get<PagedResults<Equipment>>(
-            environment.apiHost + "tour/equipment/" + id,
-        );
+    getTourEquipment(id: number): Observable<Equipment[]> {
+        return this.http.get<Equipment[]>(`${environment.host}tour/equipment`);
     }
 
     addTourEquipment(addTourEquipmentMessage: addTourEquipmentMessage): Observable<Tour> {
@@ -160,9 +126,7 @@ export class TourAuthoringService {
     }
 
     getTour(tourId: number): Observable<Tour> {
-        return this.http.get<Tour>(
-            environment.apiHost + "market-place/tours/" + tourId,
-        );
+        return this.http.get<Tour>(`${environment.host}tour/?ID=${tourId}`);
     }
 
     getPublicKeyPoints(): Observable<PagedResults<PublicKeyPoint>> {
@@ -172,17 +136,11 @@ export class TourAuthoringService {
     }
 
     publishTour(tour: Tour): Observable<Tour> {
-        return this.http.put<Tour>(
-            environment.apiHost + "tour/publish/" + tour.id,
-            tour,
-        );
+        return this.http.put<Tour>(`${environment.host}tour/publish`, tour);
     }
 
     archiveTour(tour: Tour): Observable<Tour> {
-        return this.http.put<Tour>(
-            environment.apiHost + "tour/archive/" + tour.id,
-            tour,
-        );
+        return this.http.put<Tour>(`${environment.host}tour/archive`, tour);
     }
 
     markTourAsReady(tour: Tour): Observable<Tour> {
