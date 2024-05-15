@@ -33,6 +33,7 @@ export class CommentFormComponent {
         const comment: CreateComment = {
             blogId: this.data.blogId,
             text: this.commentText,
+            authorId: this.data.user.id
         };
         this.service.addComment(comment).subscribe({
             next: (result: Comment) => {
