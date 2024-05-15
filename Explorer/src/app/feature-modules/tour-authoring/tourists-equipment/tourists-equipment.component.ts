@@ -40,8 +40,8 @@ export class TouristsEquipmentComponent {
 
   getAllEquipment(): void{
     this.service.getAllEquipment().subscribe({
-      next: (result: PagedResults<Equipment>) => {
-        this.allEquipment = result.results;
+      next: (result: any) => {
+        this.allEquipment = result.equipment;
       },
       error: (err:any) =>{
         console.log(err);

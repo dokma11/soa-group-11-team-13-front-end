@@ -41,13 +41,14 @@ export class TourEquipmentFormComponent implements OnInit{
   getAllEquipment(): void{
     this.service.getEquipment().subscribe({
       next: (result: any) => {
-        this.allEquipment = result.Equipment;
+        this.allEquipment = result.equipment;
       },
       error: (err:any) =>{
         console.log(err);
       }
     })
   }
+
   onAddClicked(eqId: number): void {
       const addTourEquipmentMessage : addTourEquipmentMessage = {
         tourId : this.id.toString(),
