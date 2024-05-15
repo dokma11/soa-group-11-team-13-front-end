@@ -37,16 +37,11 @@ export class BlogService {
     }
 
     searchByName(name: string): Observable<Blog[]> {
-        return this.http.get<Blog[]>(`${environment.host}blogs/id/?Title=${name}`);
+        return this.http.get<Blog[]>(`${environment.host}blogs/search/?Title=${name}`);
     }
 
-    // VRATI SE NA OVO
     deleteBlog(id: number) : Observable<Blog>{
-        console.log('Proba brisanja');
-        console.log(id);
-        return this.http.delete<Blog>(
-            environment.apiHost + "blog/" + id
-        );
+        return this.http.delete<Blog>(`${environment.host}blogs/?ID=${id}`);
     }
 
     getComments(blogId: number): Observable<Comment[]> {

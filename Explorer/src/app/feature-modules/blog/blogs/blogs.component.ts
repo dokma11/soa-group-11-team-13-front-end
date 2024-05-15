@@ -86,8 +86,8 @@ export class BlogsComponent implements OnInit {
 
     filterByName() {
         this.service.searchByName(this.searchName).subscribe({
-            next: (result) => {
-                this.blogs = result;
+            next: (result: any) => {
+                this.blogs = result.blogs;
                 this.removePrivates();
             },
             error: () => {}
