@@ -54,8 +54,8 @@ export class BlogComponent implements OnInit {
     getBlog(): void {
         const md = marked.setOptions({});
         this.service.getBlog(this.blogId).subscribe({
-            next: (result: Blog) => {
-                this.blog = result;
+            next: (result: any) => {
+                this.blog = result.blog;
                 this.blogMarkdown = DOMPurify.sanitize(
                     md.parse(this.blog.description),
                 );
@@ -66,8 +66,8 @@ export class BlogComponent implements OnInit {
 
     getComments(): void {
         this.service.getComments(this.blogId).subscribe({
-            next: (result: PagedResults<Comment>) => {
-                this.comments = result.results;
+            next: (result: any) => {
+                this.comments = result.comments;
                 console.log(this.comments);
             },
         });

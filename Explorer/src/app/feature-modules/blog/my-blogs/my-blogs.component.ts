@@ -53,10 +53,10 @@ export class MyBlogsComponent implements OnInit {
         }
 
         this.service.getBlogs().subscribe({
-            next: (result: PagedResults<Blog>) => {
-                if (this.user && result.results) {
-                    this.blogs = result.results.filter(
-                        blog => blog.authorId === this.user?.id,
+            next: (result: any) => {
+                if (this.user && result.blogs) {
+                    this.blogs = result.blogs.filter(
+                        (blog: { authorId: number | undefined; }) => blog.authorId === this.user?.id,
                     );
                 }
             },
@@ -74,7 +74,7 @@ export class MyBlogsComponent implements OnInit {
             authorId: 0,
             visibilityPolicy: blog.visibilityPolicy,
         };
-        this.service.publishBlog(blog.id).subscribe({
+        this.service.publishBlog(blog).subscribe({
             next: _ => {
                 this.getBlogs();
             },

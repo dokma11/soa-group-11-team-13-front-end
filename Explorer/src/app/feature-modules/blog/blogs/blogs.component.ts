@@ -1,13 +1,9 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Blog } from "../model/blog.model";
 import { BlogService } from "../blog.service";
-import { PagedResults } from "src/app/shared/model/paged-results.model";
 import { Vote } from "../model/vote.model";
 import { User } from "src/app/infrastructure/auth/model/user.model";
 import { AuthService } from "src/app/infrastructure/auth/auth.service";
-import { Pipe, PipeTransform } from "@angular/core";
-import { UpdateBlog } from "../model/blog-update.model";
-import { Following } from "../../stakeholder/model/following.model";
 import { StakeholderService } from "../../stakeholder/stakeholder.service";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { UserFollower } from "../../stakeholder/model/user-follower.model";
@@ -45,9 +41,11 @@ export class BlogsComponent implements OnInit {
     ngOnInit(): void {
         this.authService.user$.subscribe(user => {
             this.user = user;
-            this.loadFollowings().pipe(
-                switchMap(() => this.getBlogs())
-            ).subscribe();
+            // this.loadFollowings().pipe(
+            //     switchMap(() => this.getBlogs())
+            // ).subscribe();
+            this.loadFollowings();
+            this.getBlogs();
         });
     }
 
@@ -96,18 +94,25 @@ export class BlogsComponent implements OnInit {
         })
     }
 
-    getBlogs(): Observable<Blog[]> {
+    getBlogs() {
         const blogObservable = this.clubId === -1
             ? this.service.getBlogs()
             : this.service.getClubBlogs(this.clubId);
 
-        return blogObservable.pipe(
-            map((pagedResult: PagedResults<Blog>) => pagedResult.results), 
-            tap((blogs: Blog[]) => {
-                this.blogs = blogs;
+        // return blogObservable.pipe(
+        //     map((pagedResult: PagedResults<Blog>) => pagedResult.results), 
+        //     tap((blogs: Blog[]) => {
+        //         this.blogs = blogs;
+        //         this.removePrivates();
+        //     })
+        // );
+
+        this.service.getBlogs().subscribe({
+            next: (result: any) => {
+                this.blogs = result.blogs;
                 this.removePrivates();
-            })
-        );
+            }
+        });
     }
 
     getVote(blog: Blog): Vote | undefined {

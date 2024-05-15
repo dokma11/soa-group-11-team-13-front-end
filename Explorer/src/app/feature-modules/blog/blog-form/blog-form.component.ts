@@ -9,6 +9,9 @@ import * as DOMPurify from "dompurify";
 import { marked } from "marked";
 import { NotifierService } from "angular-notifier";
 import { xpError } from "src/app/shared/model/error.model";
+import { BlogMessage } from "../model/blog-message.model";
+import { AuthService } from "src/app/infrastructure/auth/auth.service";
+import { User } from "src/app/infrastructure/auth/model/user.model";
 
 @Component({
     selector: "xp-blog-form",
@@ -20,13 +23,17 @@ export class BlogFormComponent implements OnInit {
     blogId: number;
     clubId: number = -1;
     @ViewChild("editor") editorElement: ElementRef;
+    user: User | undefined;
 
     constructor(
         private service: BlogService,
         private router: Router,
         private route: ActivatedRoute,
         private notifier: NotifierService,
+        private authService: AuthService
     ) {}
+
+
     ngOnInit(): void {
         const param = this.route.snapshot.paramMap.get("blogId");
         const clubParam = this.route.snapshot.paramMap.get("clubId");
@@ -37,6 +44,10 @@ export class BlogFormComponent implements OnInit {
         if (Number(clubParam)) {
             this.clubId = Number(clubParam);
         }
+
+        this.authService.user$.subscribe(user => {
+            this.user = user;
+        });
     }
 
     modules = {
@@ -88,11 +99,11 @@ export class BlogFormComponent implements OnInit {
 
     getBlog(): void {
         this.service.getBlog(this.blogId).subscribe({
-            next: (result: Blog) => {
-                this.blog = result;
+            next: (result: any) => {
+                this.blog = result.blog;
                 this.blogForm.patchValue({
-                    title: result.title,
-                    description: result.description,
+                    title: result.blog.title,
+                    description: result.blog.description,
                 });
             },
         });
@@ -115,7 +126,15 @@ export class BlogFormComponent implements OnInit {
             return;
         }
         if(this.clubId == -1){
-            this.service.saveBlog(blog).subscribe({
+            const blogMessage: BlogMessage = {
+                id: 0,
+                title: blog.title || "",
+                description: blog.description || "",
+                status: 0,
+                authorId: this.user?.id || -170,
+            };
+
+            this.service.saveBlog(blogMessage).subscribe({
                 next: _ => {
                     this.notifier.notify("success", "Successfully created blog!");
                     this.router.navigate(["/my-blogs"]);

@@ -79,7 +79,9 @@ export class BlogPreviewComponent implements OnInit {
         
         const dialogRef = this.dialogRef.open(ShareBlogComponent, {
             data: {
-                blogId: this.blog.id
+                blogId: this.blog.id,
+                blog: this.blog,
+                recommenderId: this.user?.id,
             },
         });
     }
