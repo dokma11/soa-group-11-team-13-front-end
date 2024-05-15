@@ -96,11 +96,11 @@ export class TourAuthoringService {
     }
 
     getTourEquipment(id: number): Observable<Equipment[]> {
-        return this.http.get<Equipment[]>(`${environment.host}tour/equipment`);
+        return this.http.get<Equipment[]>(`${environment.host}tour/equipment/?tourId=${id}`);
     }
 
-    addTourEquipment(addTourEquipmentMessage: addTourEquipmentMessage): Observable<Tour> {
-        return this.http.post<Tour>(`${environment.host}tour/equipment`, addTourEquipmentMessage,);
+    addTourEquipment(ids: addTourEquipmentMessage): Observable<addTourEquipmentMessage> {
+        return this.http.post<addTourEquipmentMessage>(`${environment.host}tour/equipment`, { ids });
     }
 
     deleteTourEquipment(tourId: number, eqId: number): Observable<Tour> {
@@ -135,12 +135,12 @@ export class TourAuthoringService {
         );
     }
 
-    publishTour(tour: Tour): Observable<Tour> {
-        return this.http.put<Tour>(`${environment.host}tour/publish`, tour);
+    publishTour(tour: Tour): Observable<string> {
+        return this.http.put<string>(`${environment.host}tour/publish/?ID=${tour.id}`, { tour } );
     }
 
     archiveTour(tour: Tour): Observable<Tour> {
-        return this.http.put<Tour>(`${environment.host}tour/archive`, tour);
+        return this.http.put<Tour>(`${environment.host}tour/archive`, { tour } );
     }
 
     markTourAsReady(tour: Tour): Observable<Tour> {
@@ -181,10 +181,8 @@ export class TourAuthoringService {
         );
     }
 
-    getAllEquipment(): Observable<PagedResults<Equipment>> {
-        return this.http.get<PagedResults<Equipment>>(
-            environment.apiHost + "tourist/only_equipment",
-        );
+    getAllEquipment(): Observable<Equipment[]> {
+        return this.http.get<Equipment[]>(`${environment.host}equipment`);
     }
 
     searchAuthorTours(searchFilter: any): Observable<PagedResults<Tour>> {

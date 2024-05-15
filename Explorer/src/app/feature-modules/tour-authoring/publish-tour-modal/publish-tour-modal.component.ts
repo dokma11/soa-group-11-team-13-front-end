@@ -1,7 +1,7 @@
 import { Component, Inject } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
-import { Tour } from "../model/tour.model";
+import { Tour, TourStatus } from "../model/tour.model";
 import {
     faPersonWalking,
     faBicycle,
@@ -95,7 +95,6 @@ export class PublishTourModalComponent {
         this.service.addDurations(tour).subscribe({
             next: () => {
                 if (
-                    tour.keyPoints!.length > 1 &&
                     tour.durations &&
                     tour.durations.length > 0
                 ) {
