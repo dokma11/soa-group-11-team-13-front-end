@@ -18,8 +18,8 @@
             <div
                 class="btn btn-done"
                 (click)="openPublishModal()"
-                *ngIf="tour?.status == 2 || tour?.status == 0"
-            >
+                *ngIf="tour?.status!.toString() == 'Draft' || tour?.status!.toString() == 'Archived'"
+                >
                 Done
             </div>
         </div>
