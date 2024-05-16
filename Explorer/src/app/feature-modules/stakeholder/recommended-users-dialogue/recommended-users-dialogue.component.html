@@ -1,0 +1,15 @@
+<div class="dialog">
+  <div class="title">
+      <h1>Recommended Users</h1>
+  </div>
+  <div class="user-container">
+      <xp-user-row
+          *ngFor="let u of users"
+          [user]="u"
+          followDirection="follow"
+          [followStatus]="true"
+          [enableFollow]="true"
+          (unfollowOrFollowEvent)="unfollowOrFollow($event)"
+      />
+  </div>
+</div>

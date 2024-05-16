@@ -317,8 +317,8 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
                     for (let f of facilities) {
                         this.setMarkersForAllFacilities(
-                            f.latitude,
-                            f.longitude,
+                            f.Latitude,
+                            f.Longitude,
                         );
                     }
                 },

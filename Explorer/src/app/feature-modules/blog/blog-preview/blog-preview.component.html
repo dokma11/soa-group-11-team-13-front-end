@@ -15,7 +15,7 @@
                 active: vote ? vote.voteType == VoteType.UPVOTE : false
             }"
             (click)="onUpVote($event)"
-            *ngIf="blog.status != 0"
+            *ngIf="blog.status.toString() != 'Draft'"
         >
             <fa-icon
                 class="upvote"
@@ -24,7 +24,7 @@
                 pTooltip="Upvote"
             />
         </div>
-        <div class="vote-count" *ngIf="blog.status != 0">
+        <div class="vote-count" *ngIf="blog.status.toString() != 'Draft'">
             {{ blog.voteCount }}
         </div>
         <div
@@ -33,7 +33,7 @@
                 active: vote ? vote.voteType == VoteType.DOWNVOTE : false
             }"
             (click)="onDownVote($event)"
-            *ngIf="blog.status != 0"
+            *ngIf="blog.status.toString() != 'Draft'"
         >
             <fa-icon
                 class="downvote"
@@ -68,20 +68,20 @@
             ></quill-view-html>
         </div>
         <div class="bottom-bar">
-            <div class="comments bottom-bar-button" *ngIf="blog.status != 0">
+            <div class="comments bottom-bar-button" *ngIf="blog.status.toString() != 'Draft'">
                 <fa-icon [icon]="faComment" />{{ blog.comments?.length }}
                 Comments
             </div>
             <div
                 class="share bottom-bar-button"
                 (click)="shareBlog($event)"
-                *ngIf="blog.status != 0"
+                *ngIf="blog.status.toString() != 'Draft'"
             >
                 <fa-icon [icon]="faShareFromSquare" />
                 Share
             </div>
             <div
-                *ngIf="blog.status == 0"
+                *ngIf="blog.status.toString() == 'Draft'"
                 class="publish bottom-bar-button"
                 (click)="publishBlog($event)"
             >
@@ -89,7 +89,7 @@
                 Publish
             </div>
             <div
-                *ngIf="blog.status == 0"
+                *ngIf="blog.status.toString() == 'Draft'"
                 class="edit bottom-bar-button"
                 [routerLink]="['blog-form/' + blog.id]"
             >

@@ -9,6 +9,8 @@ import { Vote } from "./model/vote.model";
 import { CreateBlog } from "./model/blog-create.model";
 import { UpdateBlog } from "./model/blog-update.model";
 import { BlogRecommendationRequest } from "../stakeholder/model/blog-recommendation-request.model";
+import { BlogMessage } from "./model/blog-message.model";
+import { BlogRecommendationMessage } from "../stakeholder/model/blog-recommendation-message.model";
 
 @Injectable({
     providedIn: "root",
@@ -22,58 +24,45 @@ export class BlogService {
         );
     }
 
-    getBlogs(): Observable<PagedResults<Blog>> {
-        return this.http.get<PagedResults<Blog>>(environment.apiHost + "blog");
+    getBlogs(): Observable<BlogMessage[]> {
+        return this.http.get<BlogMessage[]>(`${environment.host}blogs/all`);
     }
+
     getClubBlogs(clubId: number): Observable<PagedResults<Blog>> {
         return this.http.get<PagedResults<Blog>>(environment.apiHost + "blog/getClubBlogs?page=0&pageSize=0&clubId="+clubId);
     }
-    getBlog(id: number): Observable<Blog> {
-        return this.http.get<Blog>(environment.apiHost + "blog/" + id);
+
+    getBlog(id: number): Observable<BlogMessage> {
+        return this.http.get<BlogMessage>(`${environment.host}blogs/id/?ID=${id}`);
     }
 
     searchByName(name: string): Observable<Blog[]> {
-        return this.http.get<Blog[]>(environment.apiHost + "blog/search/" + name);
+        return this.http.get<Blog[]>(`${environment.host}blogs/search/?Title=${name}`);
     }
 
-    deleteBlog(id: number) {
-        return this.http.delete<Blog>(
-            environment.apiHost + "blog/delete/" + id,
-        );
+    deleteBlog(id: number) : Observable<Blog>{
+        return this.http.delete<Blog>(`${environment.host}blogs/?ID=${id}`);
     }
 
-    getComments(blogId: number): Observable<PagedResults<Comment>> {
-        return this.http.get<PagedResults<Comment>>(
-            environment.apiHost + "tourist/comment/" + blogId,
-        );
+    getComments(blogId: number): Observable<Comment[]> {
+        return this.http.get<Comment[]>(`${environment.host}comments/blogId/?BlogId=${blogId}`,);
     }
 
     addComment(comment: CreateComment): Observable<Comment> {
-        return this.http.post<Comment>(
-            environment.apiHost + "tourist/comment",
-            comment,
-        );
+        return this.http.post<Comment>(`${environment.host}comments`, { comment });
     }
 
     updateComment(comment: Comment): Observable<Comment> {
-        return this.http.put<Comment>(
-            environment.apiHost + "tourist/comment/" + comment.id,
-            comment,
-        );
+        return this.http.put<Comment>(`${environment.host}comments`, { comment },);
     }
 
     deleteComment(id: Number): Observable<Comment> {
-        return this.http.delete<Comment>(
-            environment.apiHost + "tourist/comment/" + id,
-        );
+        return this.http.delete<Comment>(`${environment.host}comments/?ID=${id}`);
     }
 
-    saveBlog(blog: CreateBlog): Observable<CreateBlog> {
+    saveBlog(blog: BlogMessage): Observable<BlogMessage> {
         blog.status = 0;
-        return this.http.post<CreateBlog>(
-            environment.apiHost + "blog/create",
-            blog,
-        );
+        return this.http.post<BlogMessage>(`${environment.host}blogs`, { blog });
     }
 
     saveClubBlog(blog: CreateBlog): Observable<CreateBlog> {
@@ -85,14 +74,12 @@ export class BlogService {
     }
 
     updateBlog(blog: UpdateBlog): Observable<UpdateBlog> {
-        return this.http.put<UpdateBlog>(
-            environment.apiHost + "blog/update",
-            blog,
-        );
+        return this.http.put<UpdateBlog>(environment.apiHost + "blog/update", blog);
     }
 
-    publishBlog(blogId: number): Observable<any> {
-        return this.http.patch<any>(environment.apiHost + "blog/publish/" + blogId, {});
+    publishBlog(blog: Blog): Observable<number> {
+        console.log('blogId : ' + blog.id)
+        return this.http.put<number>(`${environment.host}blogs`, { blog });
     }
 
     upVoteBlog(blogId: number): Observable<any> {
@@ -107,7 +94,8 @@ export class BlogService {
         );
     }
 
-    shareBlog(blogRecommendationRequest: BlogRecommendationRequest): Observable<any> {
-        return this.http.post<any>(environment.apiHost + "blog/recommendations", blogRecommendationRequest);
+    shareBlog(recommendation: BlogRecommendationMessage): Observable<BlogRecommendationMessage> {
+        console.log(recommendation)
+        return this.http.post<BlogRecommendationMessage>(`${environment.host}recommendations`, { recommendation });
     }
 }

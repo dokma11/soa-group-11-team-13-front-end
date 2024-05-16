@@ -36,19 +36,19 @@ export class AddBundleFormComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.getToursForAuthor();
+    //this.getToursForAuthor();
   }
 
-  getToursForAuthor(): void {
-    this.service.getTours().subscribe({
-      next: (result: PagedResults<Tour>) => {
-        this.tours = result.results;
-        this.tours.forEach(t => {
+  // getToursForAuthor(): void {
+  //   this.service.getTours().subscribe({
+  //     next: (result: PagedResults<Tour>) => {
+  //       this.tours = result.results;
+  //       this.tours.forEach(t => {
           
-        });
-      }
-    })
-  }
+  //       });
+  //     }
+  //   })
+  // }
 
   submit():void{
     if (this.addBundleForm.value.name && this.addBundleForm.value.name !== "") {

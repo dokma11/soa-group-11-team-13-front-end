@@ -5,20 +5,15 @@
     <div *ngIf="showFollowers" class="user-container">
         <xp-user-row
             *ngFor="let f of followers"
-            [user]="f.followedBy"
-            [person]="f.followedByPerson"
-            [followId]="f.id"
-            [followStatus]="f.followingStatus"
+            [user]="f"
             followDirection="following"
+            [enableFollow]="true"
         />
     </div>
     <div *ngIf="showFollowings" class="user-container">
         <xp-user-row
             *ngFor="let f of followings"
-            [user]="f.following"
-            [person]="f.followingPerson"
-            [followId]="f.id"
-            [followStatus]="f.followingStatus"
+            [user]="f"
             (unfollowOrFollowEvent)="unfollowOrFollow($event)"
             [enableFollow]="true"
         />

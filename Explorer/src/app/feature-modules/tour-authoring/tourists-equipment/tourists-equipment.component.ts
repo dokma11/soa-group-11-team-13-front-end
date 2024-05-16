@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Equipment } from '../model/equipment.model';
 import { TourAuthoringService } from '../tour-authoring.service';
 import { PagedResults } from 'src/app/shared/model/paged-results.model';
+import { addTourEquipmentMessage } from '../model/addTourEquipment-message.model';
 
 @Component({
   selector: 'xp-tourists-equipment',
@@ -28,8 +29,8 @@ export class TouristsEquipmentComponent {
 
   getTourEquiupment(): void{
     this.service.getTourEquipment(this.id).subscribe({
-      next: (result: PagedResults<Equipment>) => {
-        this.equipment = result.results;
+      next: (result: any) => {
+        this.equipment = result.equipment;
       },
       error: (err:any) =>{
         console.log(err);
@@ -39,16 +40,22 @@ export class TouristsEquipmentComponent {
 
   getAllEquipment(): void{
     this.service.getAllEquipment().subscribe({
-      next: (result: PagedResults<Equipment>) => {
-        this.allEquipment = result.results;
+      next: (result: any) => {
+        this.allEquipment = result.equipment;
       },
       error: (err:any) =>{
         console.log(err);
       }
     })
   }
+
   onAddClicked(eqId: number): void {
-      this.service.addTourEquipment(this.id,eqId).subscribe({
+      const addTourEquipmentMessage : addTourEquipmentMessage = {
+        tourId : this.id.toString(),
+        equipmentId : eqId.toString(),
+      }
+
+      this.service.addTourEquipment(addTourEquipmentMessage).subscribe({
         next: ( ) =>{
           this.getTourEquiupment();
         }

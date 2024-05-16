@@ -27,6 +27,7 @@ import { ClubNotificationsComponent } from "./club-notifications/club-notificati
 import { WishlistNotificationsComponent } from "./wishlist-notifications/wishlist-notifications.component";
 import { BlogRecommendationsNotificationsComponent } from './blog-recommendations-notifications/blog-recommendations-notifications.component';
 import { ShareBlogComponent } from './share-blog/share-blog.component';
+import { RecommendedUsersDialogueComponent } from './recommended-users-dialogue/recommended-users-dialogue.component';
 
 @NgModule({
     declarations: [
@@ -52,6 +53,7 @@ import { ShareBlogComponent } from './share-blog/share-blog.component';
         WishlistNotificationsComponent,
         BlogRecommendationsNotificationsComponent,
         ShareBlogComponent,
+        RecommendedUsersDialogueComponent,
     ],
     imports: [
         CommonModule,

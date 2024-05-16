@@ -45,7 +45,7 @@
             >
                 <fa-icon
                     class="tour-action red"
-                    *ngIf="tour.status == 2 || tour.status == 0"
+                    *ngIf="tour?.status!.toString() == 'Draft' || tour?.status!.toString() == 'Archived'"
                     [icon]="faTrash"
                     (click)="delete(tour.id!); $event.stopPropagation()"
                     tooltipPosition="bottom"
@@ -60,7 +60,7 @@
                 />
                 <fa-icon
                     class="tour-action"
-                    *ngIf="tour.status == 2 || tour.status == 0"
+                    *ngIf="tour?.status!.toString() == 'Draft' || tour?.status!.toString() == 'Archived'"
                     [icon]="faMoneyBills"
                     (click)="onCouponClicked(tour); $event.stopPropagation()"
                     tooltipPosition="bottom"
@@ -68,7 +68,7 @@
                 />
                 <fa-icon
                     class="tour-action"
-                    *ngIf="tour.status == 1"
+                    *ngIf="tour?.status!.toString() == 'Published'"
                     [icon]="faBoxArchive"
                     (click)="onArchiveClicked(tour); $event.stopPropagation()"
                     tooltipPosition="bottom"
@@ -76,7 +76,7 @@
                 />
                 <fa-icon
                     class="tour-action"
-                    *ngIf="tour.status == 1 || tour.status == 2"
+                    *ngIf="tour?.status!.toString() == 'Published' || tour?.status!.toString() == 'Archived'"
                     [icon]="faBarChart"
                     [routerLink]="['/tour-statistics', tour.id]"
                     tooltipPosition="bottom"
@@ -92,7 +92,7 @@
                 />
                 <fa-icon
                     class="tour-action"
-                    *ngIf="tour.status == 2 || tour.status == 0"
+                    *ngIf="tour?.status!.toString() == 'Draft' || tour?.status!.toString() == 'Archived'"
                     (click)="onEditClicked(); $event.stopPropagation()"
                     [icon]="faPen"
                     tooltipPosition="bottom"

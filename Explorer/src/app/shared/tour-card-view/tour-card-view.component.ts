@@ -274,6 +274,7 @@ export class TourCardViewComponent implements OnChanges {
             next: () => {
                 this.tour.status = 2;
                 this.notifier.notify("success", "Tour archived.");
+                this.notifyParent.emit();
             },
             error: err => {
                 this.notifier.notify(

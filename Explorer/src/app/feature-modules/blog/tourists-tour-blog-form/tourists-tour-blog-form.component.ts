@@ -47,8 +47,8 @@ export class TouristsTourBlogFormComponent {
                         this.tourAuthoringService
                             .getTourEquipment(this.tour.id)
                             .subscribe({
-                                next: result => {
-                                    this.equipment = result.results;
+                                next: (result : any) => {
+                                    this.equipment = result.equipment;
 
                                     let equipmentString = "";
                                     if (this.equipment) {
@@ -118,11 +118,11 @@ export class TouristsTourBlogFormComponent {
 
     getBlog(): void {
         this.blogService.getBlog(0).subscribe({
-            next: (result: Blog) => {
-                this.blog = result;
+            next: (result: any) => {
+                this.blog = result.blog;
                 this.blogForm.patchValue({
-                    title: result.title,
-                    description: result.description,
+                    title: result.blog.title,
+                    description: result.blog.description,
                 });
             },
         });
@@ -142,13 +142,13 @@ export class TouristsTourBlogFormComponent {
             visibilityPolicy: 1,
         };
 
-        if (blog.title != "" && blog.title != null)
-            this.blogService.saveBlog(blog).subscribe({
-                next: _ => {
-                    this.router.navigate(["/my-blogs"]);
-                },
-            });
-        else alert("Must enter title!");
+        // if (blog.title != "" && blog.title != null)
+        //     this.blogService.saveBlog(blog).subscribe({
+        //         next: _ => {
+        //             this.router.navigate(["/my-blogs"]);
+        //         },
+        //     });
+        // else alert("Must enter title!");
     }
 
     updateBlog(): void {

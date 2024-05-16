@@ -7,10 +7,11 @@ export interface Comment {
     createdAt: string;
     updatedAt?: string;
     text: string;
-    author: User;
+    author?: User;
 }
 
 export interface CreateComment {
     blogId: number;
     text: string;
+    authorId: number;
 }

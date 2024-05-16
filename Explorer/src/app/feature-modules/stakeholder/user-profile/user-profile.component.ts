@@ -15,6 +15,8 @@ import * as DOMPurify from "dompurify";
 import { marked } from "marked";
 import { Wallet } from "../model/wallet.model";
 import { UserClubsDialogComponent } from "../user-clubs-dialog/user-clubs-dialog.component";
+import { UserFollower } from "../model/user-follower.model";
+import { RecommendedUsersDialogueComponent } from "../recommended-users-dialogue/recommended-users-dialogue.component";
 
 @Component({
     selector: "xp-user-profile",
@@ -25,9 +27,11 @@ export class UserProfileComponent implements OnInit {
     editing = false;
     user: User;
     person: Person;
-    followers: Follower[] = [];
+    followers: UserFollower[] = [];
+    //followers: Follower[] = [];
     followersCount: number;
-    followings: Following[] = [];
+    followings: UserFollower[] = [];
+    //followings: Following[] = [];
     followingsCount: number;
     showFollowers: boolean = false;
     showFollowings: boolean = false;
@@ -62,24 +66,25 @@ export class UserProfileComponent implements OnInit {
             this.loadWallet();
         });
     }
+
     loadFollowings() {
-        this.service.getFollowings(this.user.id).subscribe(result => {
-            this.followings = result.results;
-            this.followingsCount = this.followings.length;
-            this.followings.forEach(item => {
-                item.followingStatus = true;
-            });
-        });
+        this.service.getFollowings(this.user.id).subscribe({
+            next: (result: any) => {
+                this.followings = result.users;
+                this.followingsCount = this.followings.length;
+            }
+        })
     }
+
     loadFollowers() {
-        this.service.getFollowers(this.user.id).subscribe(result => {
-            this.followers = result.results;
-            this.followersCount = this.followers.length;
-            this.followers.forEach(item => {
-                item.followingStatus = true;
-            });
-        });
+        this.service.getFollowers(this.user.id).subscribe({
+            next: (result: any) => {
+                this.followers = result.users;
+                this.followersCount = this.followers.length;
+            }
+        })
     }
+
     loadWallet() {
         if(this.user.role !== 'tourist'){
             return;
@@ -88,6 +93,7 @@ export class UserProfileComponent implements OnInit {
             this.wallet = result;
         })
     }
+
     openFollowersDialog(): void {
         const dialogRef = this.dialog.open(FollowDialogComponent, {
             data: {
@@ -102,6 +108,7 @@ export class UserProfileComponent implements OnInit {
             this.loadFollowers();
         });
     }
+    
     openFollowingsDialog(): void {
         const dialogRef = this.dialog.open(FollowDialogComponent, {
             data: {
@@ -146,6 +153,18 @@ export class UserProfileComponent implements OnInit {
             data: {
                 userId: this.user.id,
             },
+        });
+    }
+
+    openRecommendedUsers() {
+        const dialogRef = this.dialog.open(RecommendedUsersDialogueComponent, {
+            data: {
+                userId: this.user.id,
+            },
+        });
+        dialogRef.afterClosed().subscribe(item => {
+            this.loadFollowings();
+            this.loadFollowers();
         });
     }
 }

@@ -12,12 +12,12 @@
     <div>
         <table>
             <tbody>
-                <tr *ngFor="let u of users">
-                    <td>{{ u.username }}</td>
+                <tr *ngIf="user">
+                    <td>{{ user.Username }}</td>
                     <td>
                         <button
-                            *ngIf="!u.followingStatus"
-                            (click)="follow(u.id)"
+                            *ngIf="user.Username != ''"
+                            (click)="follow(user.ID)"
                             color="primary"
                             mat-raised-button
                         >

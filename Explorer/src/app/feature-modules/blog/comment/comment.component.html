@@ -4,11 +4,11 @@
             <div
                 class="author-avatar"
                 [style.background-image]="
-                    'url(' + comment.author.profilePicture + ')'
+                    'url(' + comment.author?.profilePicture + ')'
                 "
             ></div>
             <div class="author-username">
-                {{ comment.author.username }}
+                {{ comment.author?.username }}
             </div>
             <div class="comment-date">
                 {{ comment.createdAt | date : "mediumDate" }}
@@ -22,7 +22,7 @@
         </div>
         <p class="comment-text" *ngIf="!isEditMode">{{ comment.text }}</p>
         <div
-            *ngIf="user.id == comment.authorId && blog.status != 2"
+            *ngIf="user.id == comment.authorId && blog.status.toString() != 'Closed'"
             class="comment-control"
         >
             <button

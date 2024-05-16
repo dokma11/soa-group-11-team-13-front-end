@@ -48,21 +48,21 @@ export class EditBundleFormComponent implements OnInit {
   addBundleForm: FormGroup
 
   ngOnInit(): void {
-    this.getToursForAuthor();
+    //this.getToursForAuthor();
     console.log(this.dataCopy);
     console.log(this.data.bundleItems);
   }
 
-  getToursForAuthor(): void {
-    this.service.getTours().subscribe({
-      next: (result: PagedResults<Tour>) => {
-        this.tours = result.results;
-        this.tours.forEach(t => {
+  // getToursForAuthor(): void {
+  //   this.service.getTours().subscribe({
+  //     next: (result: PagedResults<Tour>) => {
+  //       this.tours = result.results;
+  //       this.tours.forEach(t => {
           
-        });
-      }
-    })
-  }
+  //       });
+  //     }
+  //   })
+  // }
 
   submit(): void{
     if (this.addBundleForm.value.name && this.addBundleForm.value.name !== "") {

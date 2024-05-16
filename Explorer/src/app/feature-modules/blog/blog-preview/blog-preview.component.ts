@@ -52,6 +52,12 @@ export class BlogPreviewComponent implements OnInit {
         this.blogMarkdown = DOMPurify.sanitize(md.parse(this.blog.description));
         if (this.router.url === "/my-blogs") this.visibleDelete = true;
         else this.visibleDelete = false;
+
+        this.service.getComments(this.blog.id).subscribe({
+            next: (result: any) => {
+                this.blog.comments = result.comments;
+            }
+        })
     }
 
     onUpVote(e: Event) {
@@ -79,7 +85,9 @@ export class BlogPreviewComponent implements OnInit {
         
         const dialogRef = this.dialogRef.open(ShareBlogComponent, {
             data: {
-                blogId: this.blog.id
+                blogId: this.blog.id,
+                blog: this.blog,
+                recommenderId: this.user?.id,
             },
         });
     }

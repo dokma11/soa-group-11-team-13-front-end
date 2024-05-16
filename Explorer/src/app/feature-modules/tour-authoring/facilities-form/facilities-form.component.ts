@@ -15,6 +15,7 @@ import {
 } from "../model/public-facility-request.model";
 import { AuthService } from "src/app/infrastructure/auth/auth.service";
 import { Person } from "../../stakeholder/model/person.model";
+import { User } from "src/app/infrastructure/auth/model/user.model";
 
 @Component({
     selector: "xp-facilities-form",
@@ -52,6 +53,8 @@ export class FacilitiesFormComponent implements OnChanges {
     isPublicChecked = false;
     person: Person;
     imagePath:string;
+    user: User | undefined;
+
     ngOnInit(): void {
         this.getPerson();
     }
@@ -59,12 +62,12 @@ export class FacilitiesFormComponent implements OnChanges {
         this.facilitiesForm.reset();
         if (this.shouldEdit) {
             const facilityToPatch = {
-                name: this.facility.name || null,
-                description: this.facility.description || null,
-                imagePath: this.facility.imagePath || null,
+                name: this.facility.Name || null,
+                description: this.facility.Description || null,
+                imagePath: this.facility.ImagePath || null,
                 category: this.facility.category.toString() || null,
-                longitude: this.facility.longitude.toString() || null,
-                latitude: this.facility.latitude.toString() || null,
+                longitude: this.facility.Longitude.toString() || null,
+                latitude: this.facility.Latitude.toString() || null,
             };
             this.facilitiesForm.patchValue(facilityToPatch);
         }
@@ -82,31 +85,32 @@ export class FacilitiesFormComponent implements OnChanges {
 
     addFacility(): void {
         const facility: Facilities = {
-            name: this.facilitiesForm.value.name || "",
-            description: this.facilitiesForm.value.description || "",
-            imagePath: this.facilitiesForm.value.imagePath || "",
+            Name: this.facilitiesForm.value.name || "",
+            Description: this.facilitiesForm.value.description || "",
+            ImagePath: this.facilitiesForm.value.imagePath || "",
             category: this.selectedOption
                 ? parseInt(this.selectedOption, 10)
                 : 0,
-            longitude:
+            Longitude:
                 parseFloat(this.facilitiesForm.value.longitude || "0") || 0,
-            latitude:
+            Latitude:
                 parseFloat(this.facilitiesForm.value.latitude || "0") || 0,
         };
 
         if (this.newLatitude != 0 && this.newLongitude != 0) {
-            facility.longitude = this.newLongitude;
-            facility.latitude = this.newLatitude;
-
+            facility.Longitude = this.newLongitude;
+            facility.Latitude = this.newLatitude;
+            facility.AuthorId = this.user?.id;
+            
             this.service.uploadImage(this.tourImageFile!).subscribe({
                 next: (imagePath: string) => {
-                    facility.imagePath=imagePath;
+                    facility.ImagePath=imagePath;
                     this.service.addFacility(facility).subscribe({
                         next: result => {
                             this.facilitiesUpdated.emit();
                             if (this.facilitiesForm.value.isPublicChecked) {
                                 const request: PublicFacilityRequest = {
-                                    facilityId: result.id as number,
+                                    facilityId: result.ID as number,
                                     status: PublicStatus.Pending,
                                     authorName:
                                         this.person.name + " " + this.person.surname,
@@ -131,15 +135,15 @@ export class FacilitiesFormComponent implements OnChanges {
 
     updateFacility(): void {
         const facility: Facilities = {
-            name: this.facilitiesForm.value.name || "",
-            description: this.facilitiesForm.value.description || "",
-            imagePath: this.facilitiesForm.value.imagePath || "",
+            Name: this.facilitiesForm.value.name || "",
+            Description: this.facilitiesForm.value.description || "",
+            ImagePath: this.facilitiesForm.value.imagePath || "",
             category: this.selectedOption
                 ? parseInt(this.selectedOption, 10)
                 : 0,
-            longitude:
+            Longitude:
                 parseFloat(this.facilitiesForm.value.longitude || "0") || 0,
-            latitude:
+            Latitude:
                 parseFloat(this.facilitiesForm.value.latitude || "0") || 0,
         };
 
@@ -147,15 +151,16 @@ export class FacilitiesFormComponent implements OnChanges {
             facility.category = this.facility.category;
         }
 
-        facility.id = this.facility.id;
+        facility.ID = this.facility.ID;
+        facility.AuthorId = this.user?.id;
 
         if (this.newLatitude != 0 && this.newLongitude != 0) {
-            facility.longitude = this.newLongitude;
-            facility.latitude = this.newLatitude;
+            facility.Longitude = this.newLongitude;
+            facility.Latitude = this.newLatitude;
         }
         this.service.uploadImage(this.tourImageFile!).subscribe({
             next: (imagePath: string) => {
-                facility.imagePath = imagePath;
+                facility.ImagePath = imagePath;
                 this.service.updateFacility(facility).subscribe({
                     next: _ => {
                         this.facilitiesUpdated.emit();
@@ -169,6 +174,7 @@ export class FacilitiesFormComponent implements OnChanges {
 
     getPerson(): void {
         this.authService.user$.subscribe(user => {
+            this.user = user;
             this.service.getPerson(user.id).subscribe(result => {
                 this.person = result;
             });

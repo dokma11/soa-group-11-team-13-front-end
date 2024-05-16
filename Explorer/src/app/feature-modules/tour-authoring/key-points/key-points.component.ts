@@ -65,8 +65,8 @@ export class KeyPointsComponent implements OnInit {
         const param = this.route.snapshot.paramMap.get("id");
         if (param) {
             this.service.getTour(Number(param)).subscribe({
-                next: result => {
-                    this.tour = result;
+                next: (result: any) => {
+                    this.tour = result.tour;
                     this.getKeyPoints();
                     this.enableButtons();
                 },
@@ -96,9 +96,21 @@ export class KeyPointsComponent implements OnInit {
     }
 
     getKeyPoints(): void {
+
+        console.log(this.tour);
+        console.log(this.tour?.id);
+
+        if (this.tour?.status == 0){
+            console.log('Tura ima status 0' + this.tour?.status);
+        }
+        
+        if (this.tour?.status == 2){
+            console.log('Tura ima status 2' + this.tour?.status);
+        }
+
         this.service.getKeyPoints(this.tour?.id!).subscribe({
-            next: (result: KeyPoint[]) => {
-                this.keyPoints = result.sort((x, y) => {
+            next: (result: any) => {
+                this.keyPoints = result.keyPoints.sort((x : any, y : any) => {
                     return x.order < y.order ? -1 : 1;
                 });
                 this.tour!.keyPoints = this.tour!.keyPoints?.sort((x, y) => {

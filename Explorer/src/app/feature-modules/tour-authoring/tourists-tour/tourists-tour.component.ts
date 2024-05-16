@@ -33,7 +33,7 @@ export class TouristsTourComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.getTours();
+        //this.getTours();
     }
 
     getTourStatusText(status: TourStatus | undefined): string {
@@ -69,7 +69,7 @@ export class TouristsTourComponent implements OnInit {
                             .markTourAsReady(tour)
                             .subscribe({
                                 next: () => {
-                                    this.getTours();
+                                    //this.getTours();
                                 },
                             });
                     } else {
@@ -85,16 +85,16 @@ export class TouristsTourComponent implements OnInit {
         }
     }
 
-    getTours(): void {
-        this.tourAuthoringService.getTours().subscribe({
-            next: (result: PagedResults<Tour>) => {
-                this.tour = result.results;
-            },
-            error: (err: any) => {
-                console.log(err);
-            },
-        });
-    }
+    // getTours(): void {
+    //     this.tourAuthoringService.getTours().subscribe({
+    //         next: (result: any) => {
+    //             this.tour = result.tours;
+    //         },
+    //         error: (err: any) => {
+    //             console.log(err);
+    //         },
+    //     });
+    // }
 
     onEditClicked(tour: Tour): void {
         this.dialogRef.open(EditTouristsTourFormComponent, {
@@ -111,7 +111,7 @@ export class TouristsTourComponent implements OnInit {
     deleteTour(id: number): void {
         this.tourAuthoringService.deleteTour(id).subscribe({
             next: () => {
-                this.getTours();
+                //this.getTours();
             },
         });
     }
